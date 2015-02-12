@@ -15,6 +15,7 @@ var _ = require('lodash'),
 exports.create = function(req, res) {
 	var restaurant = new Restaurant(req.body);
 	restaurant.user = req.user;
+	restaurant.users.push(req.user);
 
 	restaurant.save(function(err) {
 		if (err) {

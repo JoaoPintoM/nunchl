@@ -8,10 +8,12 @@ angular.module('restaurants').controller('RestaurantsController', ['$scope', '$s
 		// Create new Restaurant
 		$scope.create = function() {
 			// Create new Restaurant object
+			console.log('creating restaurant..');
 			var restaurant = new Restaurants ({
 				name: this.name
 			});
 
+			console.log(restaurant);
 			// Redirect after save
 			restaurant.$save(function(response) {
 				$location.path('restaurants/' + response._id);

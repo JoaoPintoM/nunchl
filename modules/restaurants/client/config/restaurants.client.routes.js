@@ -25,6 +25,10 @@ angular.module('restaurants').config(['$stateProvider',
 		state('restaurants.edit', {
 			url: '/:restaurantId/edit',
 			templateUrl: 'modules/restaurants/views/edit-restaurant.client.view.html'
+		}).
+		state('adminMenuRestaurant', {
+			url: '/:restaurantId/menu/:menuId/adminMenu',
+			templateUrl: 'modules/restaurants/views/menu-admin.client.view.html'
 		});
 	}
 ]);

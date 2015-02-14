@@ -1,8 +1,9 @@
 'use strict';
 
 // Restaurants controller
-angular.module('restaurants').controller('RestaurantsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Restaurants',
-	function($scope, $stateParams, $location, Authentication, Restaurants ) {
+angular.module('restaurants').controller('RestaurantsController',
+			['$scope', '$stateParams', '$location', 'Authentication', 'Restaurants', 'RMenus',
+	function($scope, $stateParams, $location, Authentication, Restaurants, RMenus ) {
 		$scope.authentication = Authentication;
 
 		// Create new Restaurant
@@ -59,8 +60,36 @@ angular.module('restaurants').controller('RestaurantsController', ['$scope', '$s
 
 		// Find existing Restaurant
 		$scope.findOne = function() {
-			$scope.restaurant = Restaurants.get({ 
+			$scope.restaurant = Restaurants.get({
 				restaurantId: $stateParams.restaurantId
+			});
+		};
+
+
+		$scope.createMenu = function() {
+			var menu = new RMenus({
+				name: $scope.newMenuName
+			});
+
+			menu.$save({restaurantId: $stateParams.restaurantId}, function(menu) {
+				$scope.newMenuName = '';
+				$scope.newSection = false;
+
+				$scope.restaurant.menus.push(menu);
+
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+				alert($scope.error);
+			});
+		};
+
+		$scope.setAsActive = function(m){
+			var res = RMenus.setactive({
+									restaurantId: $stateParams.restaurantId,
+									menuId: m._id});
+
+			res.$promise.then(function(data) {
+				$scope.findOne(); // a changer !!! </ \ lo^l
 			});
 		};
 	}

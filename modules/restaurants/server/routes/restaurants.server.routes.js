@@ -14,6 +14,14 @@ module.exports = function(app) {
 		.put(restaurants.update)
 		.delete(restaurants.delete);
 
+	app.route('/api/restaurants/:restaurantId/menus').all(restaurantsPolicy.isAllowed)
+		.get(restaurants.menuList)
+		.post(restaurants.createMenu);
+		// .delete(restaurants.deleteMenu);
+
+	app.route('/api/restaurants/:restaurantId/menus/:menuId/setactive').all(restaurantsPolicy.isAllowed)
+		.get(restaurants.setActive);
+
 	// Finish by binding the Restaurant middleware
 	app.param('restaurantId', restaurants.restaurantByID);
 };

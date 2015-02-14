@@ -11,3 +11,20 @@ angular.module('restaurants').factory('Restaurants', ['$resource',
 		});
 	}
 ]);
+
+angular.module('rmenus').factory('RMenus', ['$resource',
+	function($resource) {
+		return $resource('api/restaurants/:restaurantId/menus/:menuId', {
+			restaurantId: '@_id',
+			menuId: '@_menuId'
+		}, {
+			update: {
+				method: 'PUT'
+			},
+			setactive: {
+				method:'GET',
+				url: 'api/restaurants/:restaurantId/menus/:menuId/setactive'
+			}
+		});
+	}
+]);

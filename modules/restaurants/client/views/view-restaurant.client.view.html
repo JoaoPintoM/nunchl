@@ -1,4 +1,7 @@
 <section data-ng-controller="RestaurantsController" data-ng-init="findOne()">
+
+	<p data-ng-if="error">{{error}}</p>
+
 	<div class="page-header">
 		<h1 data-ng-bind="restaurant.name"></h1>
 	</div>
@@ -18,4 +21,42 @@
 			<span data-ng-bind="restaurant.user.displayName"></span>
 		</em>
 	</small>
+
+
+	<h1>Menus ..</h1>
+
+	<style media="screen">
+		.grey{
+			color:grey;
+		}
+		.green{
+			color:green;
+		}
+	</style>
+	<ul>
+		<li data-ng-repeat="menu in restaurant.menus" class="grey" data-ng-class="{ 'green': menu.active }">{{menu.name}} / active : {{menu.active}} =
+			<a ng-if="!menu.active" class="admLinkRow" ng-click="setAsActive(menu)">
+        <i class="fa fa-bolt fa-3x"></i>
+          SET DEFAULT
+      </a>
+		</li>
+	</ul>
+
+	<p>
+		<a ng-click="newSection = true;">
+				Create new Menu :D LINK
+		</a>
+	</p>
+
+	<div ng-show="newSection">
+		<input type="text" ng-model="newMenuName">
+		<button ng-click="createMenu()"> Add !</button>
+		<button ng-click="newSection = false;"> Cancel..</button>
+
+		<br /><br />
+	</div>
+
+	<div data-ng-show="error" class="text-danger">
+		<strong data-ng-bind="error"></strong>
+	</div>
 </section>

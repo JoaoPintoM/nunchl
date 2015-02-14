@@ -1,5 +1,13 @@
 'use strict';
 
+exports.dealWithError500 = function(err, errMessage, res){
+	var message = errMessage + ' : ' + err;
+	console.log(errMessage .red);
+	res.status(500).send({
+		message: 'something went wrong'
+	});
+};
+
 /**
  * Get unique error field name
  */
@@ -22,7 +30,7 @@ var getUniqueErrorMessage = function(err) {
  */
 exports.getErrorMessage = function(err) {
 	var message = '';
-	
+
 	if (err.code) {
 		switch (err.code) {
 			case 11000:

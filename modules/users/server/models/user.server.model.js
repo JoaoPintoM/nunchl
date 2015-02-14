@@ -92,7 +92,24 @@ var UserSchema = new Schema({
 	},
   	resetPasswordExpires: {
   		type: Date
-  	}
+  	},
+
+		// nunchl stuff
+		restaurateur: {
+			type: Boolean,
+			default: false
+		},
+
+		restaurants:[{
+			restaurant: {
+					type: Schema.Types.ObjectId,
+					ref: 'Restaurant'
+			},
+			role: {type: Number}
+		}],
+
+		//nunchl stuff
+
 });
 
 /**

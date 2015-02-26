@@ -195,7 +195,7 @@ exports.createMenu = function (req, res){
 exports.setActive = function(req, res){
 	var me = require('./restaurants.server.controller');
 	me.setMainMenu(req.param('restaurantId'), req.param('menuId'), function(result){
-		console.log('omg');
+		console.log('omg why did i make that async double call again ? ');
 		console.log(result);
 		return res.jsonp(result);
 	});

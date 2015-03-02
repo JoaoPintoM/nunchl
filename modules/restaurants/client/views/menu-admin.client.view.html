@@ -1,41 +1,5 @@
 <section data-ng-controller="MenuController" data-ng-init="findOne()">
 
-<!-- <link rel="shortcut icon" href="../favicon.ico">
-<link href="~/Content/font-awesome-4.0.3/css/font-awesome.min.css" rel="stylesheet" />
-<link href="~/Content/jcrop/jquery.Jcrop.css" rel="stylesheet" />
-@*MenuCreation Page*@
-<link rel="stylesheet" href="~/Content/MenuStyle.css">
-<link href="~/Content/toastr.css" rel="stylesheet" />
-<link href="~/Content/css/responsive.css" rel="stylesheet" /> -->
-<link href="lib/jcrop/css/jquery.Jcrop.min.css" rel="stylesheet" />
-<style>
-#overlay {
-  position: fixed;
-  z-index: 999;
-  width: 100%;
-  height: 100%;
-  overflow: show;
-  margin: auto;
-  display: table;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-#overlay i {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-}
-
-.spin-big {
-  font-size: 50px;
-  height: 50px;
-  width: 50px;
-}
-</style>
 <div class="inner-content">
   <div class="nunchl-page">
     <div ng-show="isLoading()" id="overlay">
@@ -76,225 +40,46 @@
         </div>
         <br />
 
-        <br /><br />
-        <p id="great"></p>
-      </div>
-   <!--    <div class="nunchl-right-menuCreation">
-        @*// RIGHT PANEL*@
-        <div class="virtuOoZ" style="height:100%;">
-          <ul class="nav nav-tabs" id="rightTab">
-            <li><a href="#reorga" data-toggle="tab">reorga</a></li>
-            <li class="active"><a href="#options" data-toggle="tab">Options</a></li>
-            <li><a href="#image" data-toggle="tab">Image</a></li>
-          </ul>
-          <div class="tab-content tab-rightMenuCrea">
-            <div class="tab-pane fade" id="reorga">
-              Reorganize your categories
-              <p>You can drag & drop</p>
-              <br />
-              <select ng-model="selectOptionCategory" ng-options="category.Name for category in categories"></select><br>
-              <br />
-              <div class="sortableList">
-                <ul ui-sortable="sortableOptions" ng-model="categories" class="list">
-                  <li ng-mousedown="modifyOrder($index)" ng-repeat="category in categories" class="item">
-                    [{{category.Order}}] | {{category.Name}}
-                  </li>
-                </ul>
-                <br />-----------<br />
-                <ul ui-sortable="sortableOptionsMeals" ng-model="selectOptionCategory.Meals" class="list">
-                  <li ng-mousedown="modifyOrderMeals($index)" ng-repeat="meal in selectOptionCategory.Meals" class="item">
-                    [{{meal.Order}}]| {{meal.Name}}
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="tab-pane fade in active" id="options">
-              <h3>@Nunchl.Resources.Resource.EditOptions</h3>
-              <span>@Nunchl.Resources.Resource.MultipleOptions</span>
-              <br /><br />
-              <div ng-if="selectedMeal >= 0">
-                <div class="row">
-                  <div class="col-md-6"><a class="buttonsRightMenu" ng-class="{ 'selected': showNextStep }" style="float:right;" ng-click="showNextStep = true;">@Nunchl.Resources.Resource.NewOption</a></div>
-                  <div class="col-md-6"><a class="buttonsRightMenu" style="float:left;" data-toggle="modal" data-target="#myModal">@Nunchl.Resources.Resource.CopyFrom</a></div>
-                </div>
-                @*New mealItem Section*@
-                <div class="margin-mealItems">
-                  <br />
-                  <div class="row" ng-show="showNextStep">
-                    <div class="col-md-6"><a class="buttonsRightMenu" ng-class="{ 'selected': newItemStandard }" ng-click="newItemStandard = true; newItemChoices = false; SetValidationNumeric()" style="float:right;">@Nunchl.Resources.Resource.Individual</a></div>
-                    <div class="col-md-6"><a class="buttonsRightMenu" ng-class="{ 'selected': newItemChoices }" ng-click="newItemChoices = true; newItemStandard = false; SetValidationNumeric()" style="float:left;">@Nunchl.Resources.Resource.WithChoices</a></div>
-                  </div>
-                  <br />
-                  <br />
-                  @*Standard new item*@
-                  <div ng-show="newItemStandard">
-                    <form class="form-horizontal" role="form">
-                      <div class="form-group">
-                        <label for="iName" class="col-sm-2 control-label">@Nunchl.Resources.Resource.OptionName</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="iName" ng-model="iName" placeholder="eg. Salad" value="{{iName}}">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="iPrice" class="col-sm-2 control-label">@Nunchl.Resources.Resource.Price</label>
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control pricesInputs" id="iPrice" ng-model="iPrice" placeholder="eg. 0.50">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-default" ng-click="newItem = false; newItemStandard= false; addMealItem(iName, Meal.Id , iPrice)">@Nunchl.Resources.Resource.NewOption</button>
-                        </div>
-                      </div>
-                    </form>
-                    @*<form class="form-horizontal">
-                      <div class="form-group">
 
-                        <input type="text" class="form-control" id="iName" ng-model="iName" placeholder="eg. Salad" value="{{iName}}" />
-                        <input type="text" ng-model="iPrice" placeholder="eg. 0.50" />
+        <div ng-repeat="category in categories" id="sortable">
 
-                        <button ng-click="newItem = false; newItemStandard= false; addMealItem(iName, Meal.Id , iPrice)">New</button>
-                        <br /><br />
-                      </div>
-                    </form>*@
-                  </div>
-                  @*Choices new item*@
-                  <div ng-show="newItemChoices">
-                    <div id="newItemChoice_section">
-                      <div class="form-group">
-                        <input type="text" ng-model="optionTitle" placeholder="eg. Sauce" class="form-control titleItem" value="{{optionTitle}}" />
-                        <div ng-repeat="choice in listMealItemOptions">
-                          <div ng-if="$index == 0 || $index == 1 || listMealItemOptions[$index -1].Name.length > 0">
-                            <div class="row">
-                              <div class="col-md-9 colNameItem"><input class="form-control nameItem" type="text" ng-model="choice.Name" placeholder="choice name" value="{{choice.Name}}" /></div>
-                              <div class="col-md-2 colPriceItem"><input class="form-control priceItem pricesInputs" type="text" ng-model="choice.Price" placeholder="price" value="{{choice.Price}}" /></div>
-                              <div class="col-md-1"></div>
-                              @*// If first time and second time + if -1 not empty*@
-                            </div>
-                          </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                          <div class="col-md-12">
-                            <button class="form-control validateitem" ng-click="addMealItemChoices(optionTitle, Meal.id); optionTitle = ''; newItem = false; newItemChoices = false;">
-                              @Nunchl.Resources.Resource.Validation
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+              <div ng-class="{ 'selected_tag': $index == selectedCategory  }" class="tag">
+                <div class="jContainer">
+                  <!-- @*Default*@ -->
+                  <div ng-hide="editingCategory">
+                    <span class="jC_editImage"><i class="fa fa-cog" ng-click="editOptionsCats(category.name, $index)"></i></span>
+                   <!--  <img ng-click="selectCategory($index)" ng-if="!category.image" src="upimg/a383ddea0c249495e0d2679e1fc4ad6b_sm.jpg" alt="" />
+                    <img ng-click="selectCategory($index)" ng-if="category.image" ng-src="{{category.image}}" alt="{{category.image}}" /> -->
+                    <div class="jCPrice">
+                      <span ng-click="editingCategory = true; selectCategory($index)"><i class="fa fa-pencil-square-o">edit</i></span>
+                    </div>
+                    <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                      {{category.name}}
                     </div>
                   </div>
-                  @*SubItems*@
-                  <div class="MenuGrid">
-                    <div ng-if="categories[selectedCategory].Meals[selectedMeal].MealItems.length > 1"><h3>Options</h3></div>
-                    <div ng-repeat="subitem in categories[selectedCategory].Meals[selectedMeal].MealItems">
-                      @*IF not CHOICE / / THIS TEMPLATE*@
-                      <div ng-show="!subitem.Choice" ng-click="selectSubItem($index, subitem.Id)">
-                        <div class="row mealItemDisplay">
-                          <div ng-hide="editingMealItem">
-                            <div class="col-sm-7 parts">{{subitem.Name}} <b ng-click="editingMealItem = true;">@Nunchl.Resources.Resource.Edit</b></div>
-                            <div class="col-sm-3 parts">
-                              <p ng-show="subitem.Price > 0">{{subitem.Price.toFixed(2)}} <i class="fa fa-eur"></i></p>
-                              <p ng-show="subitem.Price == 0 && !subitem.Choice"><b>Free</b></p>
-                            </div>
-                            <div class="col-sm-2 parts deleteItem" ng-click="DeleteMealItem(subitem)">@Nunchl.Resources.Resource.Delete</div>
-                          </div>
-                          <div ng-show="editingMealItem">
-                            <div class="col-sm-8 parts"><input type="text" ng-model="subitem.Name" /></div>
-                            <div class="col-sm-3 parts">
-                              <input type="text" ng-model="subitem.Price"></input><i class="fa fa-eur"></i>
-                            </div>
-                            <div class="col-sm-1 parts"><button ng-click="editingMealItem = false; editMealItem(subitem)">@Nunchl.Resources.Resource.Validation</button></div>
-                          </div>
-                        </div>
-                        @*<div class="tag" ng-class="{ 'selected_tag': IsChecked($index) }">
-                          <h4>{{subitem.Name}}</h4>
-                          <p ng-show="subitem.Price > 0">{{subitem.Price.toFixed(2)}} <i class="fa fa-eur"></i></p>
-                          <p ng-show="subitem.Price == 0 && !subitem.Choice"><b>Free</b></p>
-                        </div>*@
-                      </div>
-                      @*IF CHOICE // THIS ONE*@
-                      <div ng-show="subitem.Choice" ng-click="selectSubItemWithChoice($index, subitem.Id)">
-                        <div class="choiceSection">
-                          <div class="row mealItemDisplayChoice">
-                            <div class="col-sm-7 parts">{{subitem.Name}}</div>
-                            <div class="col-sm-3 parts">
-                              <p ng-show="subitem.Price > 0">{{subitem.Price.toFixed(2)}} <i class="fa fa-eur"></i></p>
-                              <p ng-show="subitem.Price == 0 && !subitem.Choice"><b>Free</b></p>
-                            </div>
-                            <div class="col-sm-2 del deleteItem" ng-click="DeleteMealItem(subitem)">@Nunchl.Resources.Resource.Delete</div>
-                          </div>
-                          <div>
-                            <table class="table table-striped tableChoices">
-                              <tr ng-repeat="choice in subitem.Choices">
-                                <td> </td>
-                                <td>{{choice.Name}}</td>
-                                <td>{{choice.Price}}</td>
-                                @*<td class="del">delete</td>*@
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
+
+                  <!-- @*Edit stuff (non visible by default)*@ -->
+                  <div ng-show="editingCategory">
+                    <!-- <img ng-if="!category.Image" ng-src="~/Content/img/no-image.png" alt="" />
+                    <img ng-if="category.Image" ng-src="~/Content/img/nchl/{{category.Image}}" alt="" /> -->
+                    <div class="form-horizontal">
+                      <div class="form-group input-group">
+                        <input ng-model="category.name" class="form-control" type="text" placeholder="Category's Name'">
+                        <span ng-click="editingCategory = false; editCategory(category)" class="input-group-addon"><i id="target" class="fa fa-check"></i></span>
                       </div>
                     </div>
+                    <span ng-click="removeCategory(category, $index)" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                      <i class="fa fa-pencil-square-o">Delete</i></span>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="tab-pane fade" id="image">
-              <div ng-show="editingImage">
+                <!-- </div> -->
 
-                <form action="/file-upload" id="myform" method="post">
-                    <h3>Uploader votre image</h3>
-                    <i>Taille minimum : 310x110</i>
-                    <input id="iUpload" name="file" type="file">
-                    <input type="hidden" id="filename" name="fileName">
-                    <div id="uploadPreview" style="width:100px">
-                    </div>
-                    <br>
-
-                    <div ng-if="isImageUploaded()">
-                      <h4>adjust your image</h4>
-                      <div class="image-cropper">
-                        <img id="photoCrop" ng-src="upimg/{{fileName}}" style="width:400px;" class="image" />
-                      </div>
-                      <div style="width: 310px; height: 110px; overflow: hidden">
-                        <img id="preview" ng-src="upimg/{{fileName}}">
-                      </div>
-                      <button id="validateCrop">Validation</button>
-                    </div>
-                </form>
-
-                <form role="form">
-                  <div class="form-group">
-                    <label for="searchNunchlPicture">SearchForImages</label>
-                    <input ng-model="searchInput" class="form-control" id="searchNunchlPicture" name="searchNunchlPicture" type="text" placeholder="burger..">
-                  </div>
-                  <button type="submit" ng-click="SeachForImages()" class="btn btn-default">Search</button>
-                </form>
-                <div>
-                  <div ng-hide="imageResults.length > 0" style="color:red;">
-                    No image found on our database for "{{searchInput}}", search for another image or Import your own
-                  </div>
-                  <center>
-                    <ul>
-                      <li ng-click="selectImage(result)" ng-repeat="result in imageResults" class="liImagesMCrea">
-                        <img ng-src="~/Content/img/nchl/{{result.Url}}" style="width:210px" alt="{{result.Name}}" />
-                      </li>
-                    </ul>
-                  </center>
-                </div>
-                .
-              </div>
-              .
-            </div>
-          </div>
-        </div>
-      </div> -->
+             <!--  </div> -->
+         
     </div>
   </div>
 </div>
-</div>
+
 </section>
 
 <script src="lib/jcrop/js/jquery.Jcrop.min.js"></script>

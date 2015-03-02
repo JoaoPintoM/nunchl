@@ -38,6 +38,7 @@
 			<a ng-if="!menu.active" class="admLinkRow" ng-click="setAsActive(menu)">
         <i class="fa fa-bolt fa-3x"></i>
           SET DEFAULT <a href="/restaurants/{{restaurant._id}}/menu/{{menu._id}}/adminMenu">edit..</a>
+          	<button type="button" class="btn btn-danger" ng-click="removeMenu(menu)">delete</button>
       </a>
 		</li>
 	</ul>

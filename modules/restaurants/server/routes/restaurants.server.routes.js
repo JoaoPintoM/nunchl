@@ -3,6 +3,7 @@
 module.exports = function(app) {
 	var restaurants = require('../controllers/restaurants.server.controller');
 	var categories = require('../controllers/categories.server.controller');
+	var meals = require('../controllers/meals.server.controller');
 	var restaurantsPolicy = require('../policies/restaurants.server.policy');
 
 
@@ -16,10 +17,18 @@ module.exports = function(app) {
 		.put(restaurants.update)
 		.delete(restaurants.delete);
 
+	//MENUS============||||||
 	app.route('/api/restaurants/:restaurantId/menus').all(restaurantsPolicy.isAllowed)
 		.get(restaurants.menuList)
 		.post(restaurants.createMenu);
 		// .delete(restaurants.deleteMenu);
+
+	app.route('/api/restaurants/:restaurantId/menus/:menuId')
+		.delete(restaurants.deleteMenu);
+
+	app.route('/api/restaurants/:restaurantId/menus/:menuId/setactive').all(restaurantsPolicy.isAllowed)
+		.get(restaurants.setActive);
+	//MENUS============||||||
 
 
 	//CATEGORIES============||||||
@@ -29,12 +38,10 @@ module.exports = function(app) {
 
 	app.route('/api/restaurants/:restaurantId/menus/:menuId/categories/:categoryId')
 		 .get(categories.read)
-		 .put(categories.update);
+		 .put(categories.update)
+		 .delete(categories.delete);
 	//CATEGORIES============||||||
 
-
-	app.route('/api/restaurants/:restaurantId/menus/:menuId/setactive').all(restaurantsPolicy.isAllowed)
-		.get(restaurants.setActive);
 
 	// Finish by binding the Restaurant middleware
 	app.param('restaurantId', restaurants.restaurantByID);

@@ -15,7 +15,6 @@ var mongoose = require('mongoose'),
 //Categories!!
 
 //retrieve categories from a restaurant
-// /restaurants/54441815dfa8ed0000b4e989/menu/54441818dfa8ed0000b4e992/categories
 exports.list = function (req, res){
 
   Restaurant.findOne({_id: req.param('restaurantId')})
@@ -36,71 +35,34 @@ exports.list = function (req, res){
         message: 'Not found'
       });
     }else{
+      var i = 0; //find the correct menu.
+      _(restaurant.menus).forEach(function(m) {
+          if(m._id.toString() === req.param('menuId')){
 
+              // // return res.jsonp(restaurant.menus);
+              Meal.populate(restaurant.menus[i],{
+                path: 'categories.meals'
+                // select: 'name price mealItems'
+                // model: Meal // <== We are populating phones so we need to use the correct model, not User
+              }, function (err, o) {
 
-    var i = 0; //find the correct menu.
-    _(restaurant.menus).forEach(function(m) {
-        if(m._id.toString() === req.param('menuId')){
+                return res.jsonp(o.categories);
+              });
 
-            // // return res.jsonp(restaurant.menus);
-            // Meal.populate(restaurant.menus[i],{
-            //   path: 'categories.meals'
-            //   // select: 'name price mealItems'
-            //   // model: Meal // <== We are populating phones so we need to use the correct model, not User
-            // }, function (err, o) {
-
-            //   return res.jsonp(o.categories);
-            // });
-
-            return res.jsonp(m.categories);
-        }
-        i++;
-    });
-
-
-
+              // return res.jsonp(m.categories);
+          }
+          i++;
+      });
     // // its obliously the first one cause we only have a menu by ID
     // return res.jsonp(restaurant.menus[0].categories);
-
     }
   });
-
-
-
-  // Restaurant.findOne({_id: req.param('restaurantId')})
-  //   .where('menus._id').equals(req.param('menuId'))
-  //   .populate('menu')
-  //   .select('menus')
-  //   .exec(function(err, restaurant) {
-  //
-  //   if (err) {
-  //     console.log('Restaurants.read : ' + err);
-  //     return res.status(500).send({
-  //       message: 'something went wrong'
-  //     });
-  //   }
-  //
-  //   if (!restaurant)
-  //     return res.status(404).send({
-  //       message: 'Not found'
-  //     });
-  //
-  //   Meal.populate(restaurant,{
-  //     path: 'menu.meals'
-  //     // select: 'name price mealItems'
-  //     // model: Meal // <== We are populating phones so we need to use the correct model, not User
-  //   }, function (err, meals) {
-  //
-  //     return res.jsonp(meals.menus);
-  //   });
-  //   // // its obliously the first one cause we only have a menu by ID
-  //   // return res.jsonp(restaurant.menus[0].categories);
-  // });
 };
 
 
 exports.update = function(req, res){
-  // var article = req.article;
+
+  console.log('Hello dear Cecile <3');
 
   //we remove
   delete req.body.meals;
@@ -200,7 +162,6 @@ exports.create = function(req, res) {
 
 exports.read = function (req, res){
 
-
   Restaurant.findOne({_id: req.param('restaurantId')})
     .where('menus._id').equals(req.param('menuId'))
     .populate('menu')
@@ -222,3 +183,48 @@ exports.read = function (req, res){
     return res.jsonp(restaurant);
   });
 };
+
+/**
+ * Delete a Category
+ */
+exports.delete = function(req, res) {
+  console.log(' = = = = = = = = ');
+  console.log(req.param('restaurantId'));
+  console.log(req.param('categoryId'));
+
+  Restaurant.findOne({_id: req.param('restaurantId')}, function (err, restaurant){
+
+
+    if (err) {
+      console.log('categories.delete : ' + err);
+      return res.status(500).send({
+        message: 'something went wrong'
+      });
+    }
+
+    if (!restaurant)
+      return res.status(404).send({
+        message: 'Not found'
+      });
+
+    if(restaurant){
+
+      return res.jsonp(restaurant);
+    }
+
+  });
+
+  // var restaurant = req.restaurant;
+
+  // restaurant.remove(function(err) {
+  //   if (err) {
+  //     return res.status(400).send({
+  //       message: errorHandler.getErrorMessage(err)
+  //     });
+  //   } else {
+  //     res.jsonp(restaurant);
+  //   }
+  // });
+};
+
+

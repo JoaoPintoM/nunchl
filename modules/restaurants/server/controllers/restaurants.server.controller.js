@@ -193,6 +193,68 @@ exports.createMenu = function (req, res){
 };
 
 
+exports.deleteMenu = function(req, res){
+
+  	var menuId = req.param('menuId');
+
+  	Restaurant.findOne({_id: req.param('restaurantId')}, function (err, restaurant){
+
+	    if (err) {
+	      console.log('categories.delete : ' + err);
+	      return res.status(500).send({
+	        message: 'something went wrong'
+	      });
+	    }
+
+	    if (!restaurant)
+	      return res.status(404).send({
+	        message: 'Not found'
+	      });
+
+	    if(restaurant){
+
+	    	var i = 0;
+	    	var toRemove = null;
+	    	var categoriesToDelete = [];
+
+	    	//that small code remove the menu reference in menus and menu (if active)
+	    	_(restaurant.menus).forEach(function(m) {
+	    		if(m._id.toString() === menuId){
+	    			toRemove = i;
+	    			categoriesToDelete = m.categories;
+
+	    			if(m.active)
+	    				restaurant.menu = [];
+	    		}
+
+	    		i++;
+	    	});
+
+	    	if(toRemove !== null){
+	    		restaurant.menus.splice(toRemove, 1);
+	    	}
+
+	    	//we have the categoriesTodelete; then we save the restaurant first
+	    	restaurant.save(function (err){
+
+			   	if (err) {
+			      console.log('categories.delete 2 : ' + err);
+			      return res.status(500).send({
+			        message: 'something went wrong'
+			      });
+			    }
+
+
+	    		return res.jsonp(restaurant);
+	    	});
+
+
+	      
+	    }
+  });
+};
+
+
 exports.setActive = function(req, res){
 	var me = require('./restaurants.server.controller');
 	me.setMainMenu(req.param('restaurantId'), req.param('menuId'), function(result){

@@ -85,6 +85,27 @@ angular.module('restaurants').controller('RestaurantsController',
 			});
 		};
 
+		$scope.removeMenu = function(menu){
+
+			var m = new RMenus(menu);
+
+			if ( menu ) { 
+	            m.$remove({
+	                restaurantId: $stateParams.restaurantId,
+	                menuId: m._id
+	            }, function(data){
+	                console.log('before data');
+	                console.log(data);
+
+		            for (var i in $scope.restaurant.menus ) {
+						if ($scope.restaurant.menus [i] === menu ) {
+							$scope.restaurant.menus.splice(i, 1);
+						}
+					}
+	            });
+	        }
+		};
+
 		$scope.setAsActive = function(m){
 			var res = RMenus.setactive({
 						restaurantId: $stateParams.restaurantId,

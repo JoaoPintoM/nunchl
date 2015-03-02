@@ -63,11 +63,11 @@ angular.module('restaurants').controller('MenuController', ['$scope', '$statePar
         $scope.selectedCategory = $index;
         $scope.firstTime = false;
 
-        $('html, body').animate({
-            scrollTop: $('#id_meals').offset().top
-        }, 500);
+        // $('html, body').animate({
+        //     scrollTop: $('#id_meals').offset().top
+        // }, 500);
 
-        $('#id_meals').blur();
+        // $('#id_meals').blur();
 
         $scope.selectedMeal = -1;
     };
@@ -117,35 +117,43 @@ angular.module('restaurants').controller('MenuController', ['$scope', '$statePar
         $scope.loading = true;
 
         category.$update({
-          menuId:'545631a2782f3f1ab60c6b47',
+          restaurantId: $stateParams.restaurantId,
+          menuId:$stateParams.menuId,
           categoryId: category._id}, function(data) {
 
           $scope.loading = false;
           $scope.categories[$scope.selectedCategory] = data;
-          $scope.$apply();
+          // $scope.$apply();
 
         }, function(errorResponse) {
           alert(errorResponse.data.message);
           $scope.error = errorResponse.data.message;
         });
+    };
 
-        // $.ajax({
-        //     url: '/api/Category/' + category.Id,
-        //     type: 'PUT',
-        //     data: category,
-        //     success: function (data) {
-        //           $scope.categories[$scope.selectedCategory] = data;
-        //           toastr.success("Category " + data.Name + " Edited");
-        //
-        //           $scope.loading = false;
-        //           $scope.$apply();
-        //     },
-        //     error: function (xhr, status, error) {
-        //         var err = eval("(" + xhr.responseText + ")");
-        //         alert(err.Message);
-        //           $scope.loading = false;
-        //     }
-        // });
+    // Remove existing Restaurant
+    $scope.removeCategory = function( category ) {
+        if ( category ) { 
+            category.$remove({
+                restaurantId: $stateParams.restaurantId,
+                menuId:$stateParams.menuId,
+                categoryId: category._id
+            }, function(data){
+                console.log('before data');
+                console.log(data);
+            });
+
+            // for (var i in $scope.restaurants ) {
+            //     if ($scope.restaurants [i] === restaurant ) {
+            //         $scope.restaurants.splice(i, 1);
+            //     }
+            // }
+        } else {
+            console.log('else');
+            // $scope.restaurant.$remove(function() {
+            //     $location.path('restaurants');
+            // });
+        }
     };
 
     // $scope.addMeal = function (mealName, catId, mealPrice,  mealOrder) {

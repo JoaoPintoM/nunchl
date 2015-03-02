@@ -2,7 +2,9 @@
 
 module.exports = function(app) {
 	var restaurants = require('../controllers/restaurants.server.controller');
+	var categories = require('../controllers/categories.server.controller');
 	var restaurantsPolicy = require('../policies/restaurants.server.policy');
+
 
 	// Restaurants Routes
 	app.route('/api/restaurants').all()
@@ -18,6 +20,18 @@ module.exports = function(app) {
 		.get(restaurants.menuList)
 		.post(restaurants.createMenu);
 		// .delete(restaurants.deleteMenu);
+
+
+	//CATEGORIES============||||||
+	app.route('/api/restaurants/:restaurantId/menus/:menuId/categories')
+		 .get(categories.list)
+		 .post(categories.create);
+
+	app.route('/api/restaurants/:restaurantId/menus/:menuId/categories/:categoryId')
+		 .get(categories.read)
+		 .put(categories.update);
+	//CATEGORIES============||||||
+
 
 	app.route('/api/restaurants/:restaurantId/menus/:menuId/setactive').all(restaurantsPolicy.isAllowed)
 		.get(restaurants.setActive);

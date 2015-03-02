@@ -87,8 +87,8 @@ angular.module('restaurants').controller('RestaurantsController',
 
 		$scope.setAsActive = function(m){
 			var res = RMenus.setactive({
-									restaurantId: $stateParams.restaurantId,
-									menuId: m._id});
+						restaurantId: $stateParams.restaurantId,
+						menuId: m._id});
 
 			res.$promise.then(function(data) {
 				$scope.findOne(); // a changer !!! </ \ lo^l

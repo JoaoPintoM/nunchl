@@ -20,12 +20,16 @@ var CategorySchema = new Schema({
   image: {
     type: String,
     default: ''
-  },
+  }
 
-  meals: [{
-    type: Schema.ObjectId,
-    ref: 'Meal'
-  }]
+  // meals: [{
+  //   type: Schema.ObjectId,
+  //   ref: 'Meal'
+  // }]
+
+
+
+
   // _menu ? ?  : { type: Number, ref: 'Menu ? ? ?' },
 });
 

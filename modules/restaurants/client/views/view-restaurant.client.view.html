@@ -37,7 +37,7 @@
 		<li data-ng-repeat="menu in restaurant.menus" class="grey" data-ng-class="{ 'green': menu.active }">{{menu.name}} / active : {{menu.active}} =
 			<a ng-if="!menu.active" class="admLinkRow" ng-click="setAsActive(menu)">
         <i class="fa fa-bolt fa-3x"></i>
-          SET DEFAULT <a href="/#!/restaurants/{{restaurant._id}}/menu/{{menu._id}}/edit">edit..</a>
+          SET DEFAULT <a href="/restaurants/{{restaurant._id}}/menu/{{menu._id}}/adminMenu">edit..</a>
       </a>
 		</li>
 	</ul>

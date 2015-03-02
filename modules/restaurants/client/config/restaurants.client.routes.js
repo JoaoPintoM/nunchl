@@ -34,7 +34,7 @@ angular.module('restaurants').config(['$stateProvider',
 			url: '/:restaurantId/edit',
 			templateUrl: 'modules/restaurants/views/edit-restaurant.client.view.html'
 		}).
-		state('adminMenuRestaurant', {
+		state('restaurants.adminMenu', {
 			url: '/:restaurantId/menu/:menuId/adminMenu',
 			templateUrl: 'modules/restaurants/views/menu-admin.client.view.html'
 		});

@@ -1,15 +1,30 @@
 'use strict';
 
 //Restaurants service used to communicate Restaurants REST endpoints
-angular.module('restaurants').factory('Restaurants', ['$resource',
-	function($resource) {
-		return $resource('api/restaurants/:restaurantId', { restaurantId: '@_id'
-		}, {
-			update: {
-				method: 'PUT'
-			}
-		});
-	}
+angular.module('restaurants')
+
+.factory('Restaurants', ['$resource',
+function($resource) {
+	return $resource('api/restaurants/:restaurantId', { restaurantId: '@_id'
+	}, {
+		update: {
+			method: 'PUT'
+		}
+	});
+}])
+
+.factory('Categories', ['$resource',
+  function($resource) {
+    return $resource('api/restaurants/:restaurantId/menus/:menuId/categories/:categoryId', {
+      restaurantId: '@_id',
+      menuId: '@_menuId',
+      categoryId: '@_catId'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
 ]);
 
 angular.module('rmenus').factory('RMenus', ['$resource',

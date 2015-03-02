@@ -30,6 +30,7 @@ var _ = require('lodash'),
 // };
 
 exports.create = function(req, res) {
+	console.log('OI TO ERASE CREATE RESTAURANIZOR');
 	var restaurant = new Restaurant(req.body);
 	restaurant.users.push(req.user);
 	restaurant.user = req.user;

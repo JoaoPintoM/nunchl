@@ -73,148 +73,13 @@
               </div>
             </div>
 
-            <!-- NG REPEAT CATEGORIES -->
-            <div ng-repeat="category in categories" id="sortable">
-
-              <div ng-class="{ 'selected_tag': $index == selectedCategory }" class="tag">
-                <div class="jContainer">
-                  <!-- @*Default*@ -->
-                  <div ng-hide="editingCategory">
-                    <span class="jC_editImage"><i class="fa fa-cog" ng-click="editOptionsCats(category.name, $index)"></i></span>
-                    <img ng-click="selectCategory($index)" ng-if="!category.image" src="upimg/a383ddea0c249495e0d2679e1fc4ad6b_sm.jpg" alt="" />
-                    <img ng-click="selectCategory($index)" ng-if="category.image" ng-src="{{category.image}}" alt="{{category.image}}" />
-                    <div class="jCPrice">
-                      <span ng-click="editingCategory = true; selectCategory($index)"><i class="fa fa-pencil-square-o">edit</i></span>
-                    </div>
-                    <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
-                      {{category.name}}
-                    </div>
-                  </div>
-
-                  <!-- @*Edit stuff (non visible by default)*@ -->
-                  <div ng-show="editingCategory">
-                    <img ng-if="!category.Image" ng-src="~/Content/img/no-image.png" alt="" />
-                    <img ng-if="category.Image" ng-src="~/Content/img/nchl/{{category.Image}}" alt="" />
-                    <div class="form-horizontal">
-                      <div class="form-group input-group">
-                        <input ng-model="category.name" class="form-control" type="text" placeholder="Category's Name'">
-                        <span ng-click="editingCategory = false; editCategory(category)" class="input-group-addon"><i id="target" class="fa fa-check"></i></span>
-                      </div>
-                    </div>
-                    <span ng-click="DeleteCategory(category, $index)" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
-                      <i class="fa fa-pencil-square-o">Delete</i>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-              <!-- @*Reset Button*@ -->
-              <!-- @*<div ng-click="resetCategory()">
-              <div ng-show="selectedCategory != -1" class="tag">
-              <i class="fa fa-reply-all fa-3x"></i>
-              <b>Back to Categories</b>
-            </div>
-          </div>*@ -->
         </div>
         <br />
-        <!-- @*Meals*@ -->
-        <div class="MenuGrid" id="id_meals">
-          <!-- @*ADD New Meal..*@ -->
-          <h2>{{categories[selectedCategory].name}}</h2>
-          <div ng-show="selectedCategory != -1" class="tag">
-            <div class="jcontainerAdd">
-              <div ng-hide="newMeal" ng-click="newMeal = true; SetValidationNumeric()">
-                <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
-                  <i class="fa fa-plus-circle fa-lg"></i> <b ng-click="newMeal = true">New {{categories[selectedCategory].name}} Meal</b>
-                </div>
-              </div>
-              <div ng-show="newMeal">
-                <b>Mealsname + Price</b>
-                <div class="form-horizontal">
-                  <div class="form-group input-group" style="width:80%; margin:auto;">
-                    <input type="text" class="form-control" ng-model="mName" placeholder="mealName" value="{{nName}}" />
-                    <input type="text" class="form-control pricesInputs" ng-model="mPrice" placeholder="Price: eg. 7.99" />
-                    <input type="hidden" ng-model="mo" placeholder="eg. 15.50" value="{{mo = categories[selectedCategory].meals[categories[selectedCategory].meals.length - 1].Order + 1000}}" />
-                    <br /><br />
-                    <button class="form-control" ng-click="newMeal = false; addMeal(mName, categories[selectedCategory]._id , mPrice, mo)">New</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div ng-repeat="Meal in categories[selectedCategory].meals">
-            <div ng-click="showAddMealItem = true">
-              <div class="tag" ng-class="{ 'selected_tag': $index == selectedMeal }">
-                <div class="jContainer">
-                  <!-- @*Default*@ -->
-                  <div ng-hide="editMeal">
-                    <span class="jC_editImage"><i class="fa fa-cogs" ng-click="editOptionsMeals(Meal.Name, $index, Meal)"></i></span>
-                    <img ng-if="!Meal.image" src="img/demo_restaurant_medium.jpg" style="cursor:pointer" ng-click="selectMeal($index, Meal.Id);editOptionsMeals(Meal.Name, $index, Meal)" alt="" />
-                    <img ng-if="Meal.image" ng-src="{{Meal.image}}" style="cursor:pointer" ng-click="selectMeal($index, Meal.Id);editOptionsMeals(Meal.Name, $index, Meal)" alt="" />
-                    <div class="jCPrice">
-                      <span ng-click="editMeal = true; SetValidationNumeric()"><i class="fa fa-pencil-square-o">e</i></span>
-                    </div>
-                    <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
-                      {{Meal.name}}
-                    </div>
-                  </div>
-                  <!-- @*Edit stuff (non visible by default)*@ -->
-                  <div ng-show="editMeal">
-                    <div class="form-horizontal">
-                      <div class="form-group input-group" style="width: 80%;margin: auto; padding:5px, 0, 5px, 0">
-                        <input ng-model="Meal.name" class="form-control" type="text" placeholder="Meal's Name'">
-                        <input ng-model="Meal.price" class="form-control pricesInputs" placeholder="Price">
-                        <br /><br />
-                        <button class="form-control" ng-click="editMeal = false; editMealFunction(Meal)">Edit</button>
-                        <br /><span ng-click="DeleteMeal(Meal, $index)" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
-                          <i class="fa fa-pencil-square-o">Delete</i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Modal -->
-          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="color:black;">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body" id="myModalBody" style="height: 50%; overflow:auto;">
-                  <ul>
-                    <li ng-repeat="category in categories">
-                      <div ng-if="category.Meals.length > 0">
-                        <b>{{category.Name}}</b><br />---------------
-                        <div style="padding-left:10px;" ng-repeat="meal in category.Meals">
-                          <div ng-if="meal.MealItems.length > 0" ng-click="AddSameAs(meal)">
-                            <b>[{{meal.Name}}]</b> //
-                            <span ng-repeat="item in meal.MealItems">
-                              {{item.Name}}<span ng-if="$index < meal.MealItems.length - 1">, </span>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <br />
-                    </li>
-                  </ul>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" id="closeModal" data-dismiss="modal">Close</button>
-                  @*<button type="button" class="btn btn-primary">Save changes</button>*@
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
         <br /><br />
         <p id="great"></p>
       </div>
-      <div class="nunchl-right-menuCreation">
+   <!--    <div class="nunchl-right-menuCreation">
         @*// RIGHT PANEL*@
         <div class="virtuOoZ" style="height:100%;">
           <ul class="nav nav-tabs" id="rightTab">
@@ -379,13 +244,6 @@
             <div class="tab-pane fade" id="image">
               <div ng-show="editingImage">
 
-                <!-- <form method="post" enctype="multipart/form-data" action="/file-upload">
-                  <input type="text" name="username">
-                  <input type="password" name="password">
-                  <input type="file" name="thumbnail">
-                  <input type="submit">
-              </form> -->
-
                 <form action="/file-upload" id="myform" method="post">
                     <h3>Uploader votre image</h3>
                     <i>Taille minimum : 310x110</i>
@@ -407,31 +265,6 @@
                     </div>
                 </form>
 
-
-                <!-- @using (Html.BeginForm("Create", "Restaurants", FormMethod.Post, new { @id = "myform" }))
-                {
-                  <h3>@Nunchl.Resources.Resource.UploadImage</h3>
-                  <i>@Nunchl.Resources.Resource.MinSize : 310x110</i>
-                  @*<div id="fileuploader">Upload</div>*@
-
-                  <input id="iUpload" name="file" type="file" />
-                  <input type="hidden" id="filename" name="fileName" />
-                  <div id="uploadPreview" style="width:100px">
-                  </div>
-                  <br />
-
-                  <div ng-if="isImageUploaded()">
-                    @*<h4>{{fileName}}</h4>*@ <h4>adjust your image</h4>
-                    <div class="image-cropper">
-                      <img id="photoCrop" ng-src="~/Content/upload/Temp/{{fileName}}?maxwidth=400" class="image" />
-                      @*<a class="result" href="#">View the result</a><br />*@
-                    </div>
-                    <div style="width: 310px; height: 110px; overflow: hidden">
-                      <img id="preview" ng-src="~/Content/upload/Temp/{{fileName}}">
-                    </div>
-                    <button id="validateCrop">@Nunchl.Resources.Resource.Validation</button>
-                  </div>
-                } -->
                 <form role="form">
                   <div class="form-group">
                     <label for="searchNunchlPicture">SearchForImages</label>
@@ -457,7 +290,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

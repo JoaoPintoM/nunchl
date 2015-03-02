@@ -17,6 +17,14 @@ angular.module('restaurants').config(['$stateProvider',
 		state('restaurants.create', {
 			url: '/create',
 			templateUrl: 'modules/restaurants/views/create-restaurant.client.view.html'
+		})
+		.state('restaurants.paginated', {
+	    url: '/page-:pageNum',
+	    templateUrl: 'modules/restaurants/views/list-restaurants.client.view.html'
+	    // controller: function ($stateParams) {
+	    //     // If we got here from a url of /contacts/page-2
+	    //     expect($stateParams).toBe({pageNum: 2});
+	    // }
 		}).
 		state('restaurants.view', {
 			url: '/:restaurantId',

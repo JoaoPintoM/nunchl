@@ -6,6 +6,8 @@ angular.module('restaurants').controller('RestaurantsController',
 	function($scope, $stateParams, $location, Authentication, Restaurants, RMenus ) {
 		$scope.authentication = Authentication;
 
+		$scope.currentPage = $stateParams.pageNum;
+
 		// Create new Restaurant
 		$scope.create = function() {
 			// Create new Restaurant object

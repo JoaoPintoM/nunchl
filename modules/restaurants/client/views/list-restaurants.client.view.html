@@ -21,4 +21,26 @@
     <div class="alert alert-warning text-center" data-ng-hide="!restaurants.$resolved || restaurants.length">
     	No Restaurants yet, why don't you <a href="/#!/restaurants/create">create one</a>?
     </div>
+    
+    <nav>
+  <ul class="pagination">
+    <li>
+      <a href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li data-ng-class="{active: currentPage == 1 || !currentPage}"><a href="/restaurants/page-1">1</a></li>
+    <li data-ng-class="{active: currentPage == 2}"><a href="/restaurants/page-2">2</a></li>
+    <li data-ng-class="{active: currentPage == 3}"><a href="/restaurants/page-3">3</a></li>
+    <li data-ng-class="{active: currentPage == 4}"><a href="/restaurants/page-4">4</a></li>
+    <li data-ng-class="{active: currentPage == 5}"><a href="/restaurants/page-5">5</a></li>
+    <li>
+      <a href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+
 </section>

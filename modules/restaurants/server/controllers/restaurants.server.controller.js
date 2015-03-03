@@ -13,24 +13,7 @@ var _ = require('lodash'),
 /**
  * Create a Restaurant
  */
-// exports.create = function(req, res) {
-// 	var restaurant = new Restaurant(req.body);
-// 	restaurant.user = req.user;
-// 	restaurant.users.push(req.user);
-//
-// 	restaurant.save(function(err) {
-// 		if (err) {
-// 			return res.status(400).send({
-// 				message: errorHandler.getErrorMessage(err)
-// 			});
-// 		} else {
-// 			res.jsonp(restaurant);
-// 		}
-// 	});
-// };
-
 exports.create = function(req, res) {
-	console.log('OI TO ERASE CREATE RESTAURANIZOR');
 	var restaurant = new Restaurant(req.body);
 	restaurant.users.push(req.user);
 	restaurant.user = req.user;
@@ -40,9 +23,8 @@ exports.create = function(req, res) {
 		active: true,
 		categories: []
 	});
-
+	
 	// console.log(restaurant.menus);
-
 	restaurant.save(function(err) {
 		if (err) {
 			return res.status(400).send({
@@ -86,7 +68,7 @@ exports.read = function(req, res) {
  * Update a Restaurant
  */
 exports.update = function(req, res) {
-	var restaurant = req.restaurant ;
+	var restaurant = req.restaurant;
 
 	restaurant = _.extend(restaurant , req.body);
 
@@ -244,12 +226,12 @@ exports.deleteMenu = function(req, res){
 			      });
 			    }
 
+			    //there i NEED to delete the categories.. 
+			    //I can't let them on the database for nothing.
+			    //IMPORTANT !!!! \\
 
 	    		return res.jsonp(restaurant);
 	    	});
-
-
-	      
 	    }
   });
 };
@@ -267,66 +249,57 @@ exports.setActive = function(req, res){
 
 exports.setMainMenu = function(restoId, menuId, callback){
 	Restaurant.findById(restoId)
-						.select('menu menus').exec(function(err, restaurant){
+					.select('menu menus').exec(function(err, restaurant){
 
+		if (err) {
+			console.log('Restaurants.setMainMenu : ' + err);
+			return err;
+		}
+
+		if (!restaurant)
+			return {
+				message: 'restaurant not found'
+			};
+
+		console.log('BEFORE');
+		console.log(restaurant);
+
+		//first each to put everything as not active.
+		var i = 0;
+		_(restaurant.menus).forEach(function(m) {
+			restaurant.menus[i].active = false;
+			i++;
+		});
+
+
+		restaurant.save(function (err){
 			if (err) {
-				console.log('Restaurants.setMainMenu : ' + err);
+				console.log('categories.setMainMenu 2 : ' + err);
 				return err;
 			}
 
-			if (!restaurant)
-				return {
-					message: 'restaurant not found'
-				};
 
-			console.log('BEFORE');
-			console.log(restaurant);
-
-			//first each to put everything as not active.
-			var i = 0;
+			console.log(menuId + '=======');
+			i = 0;
+			//for each to find the correct menu (workaround..)
 			_(restaurant.menus).forEach(function(m) {
-				restaurant.menus[i].active = false;
+				if(m._id.toString() === menuId){
+
+					//doing our stuff :)
+					restaurant.menu = m.categories;
+					restaurant.menus[i].active = true;
+
+					restaurant.save(function (err){
+						if (err) {
+							console.log('categories.setMainMenu 2 : ' + err);
+							return err;
+						}
+
+						callback(restaurant);
+					});
+				}
 				i++;
 			});
-
-
-			restaurant.save(function (err){
-				if (err) {
-					console.log('categories.setMainMenu 2 : ' + err);
-					return err;
-				}
-
-
-				console.log('AFTER');
-				console.log(restaurant);
-
-				console.log(menuId + '=======');
-				i = 0;
-				//for each to find the correct menu (workaround..)
-				_(restaurant.menus).forEach(function(m) {
-						if(m._id.toString() === menuId){
-							console.log('here ;)');
-
-							//doing our stuff :)
-							restaurant.menu = m.categories;
-							restaurant.menus[i].active = true;
-
-							console.log('BEFORE SAVE');
-							console.log(restaurant);
-
-							restaurant.save(function (err){
-									if (err) {
-										console.log('categories.setMainMenu 2 : ' + err);
-										return err;
-									}
-
-									console.log('after save');
-									console.log(restaurant);
-									callback(restaurant);
-							});
-						}
-						i++;
-				});
-			});
+		});
 	});
 };

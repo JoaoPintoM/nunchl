@@ -8,7 +8,8 @@ var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	Restaurant = mongoose.model('Restaurant'),
 	User = mongoose.model('User'),
-	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
+	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+	categoryCtrl = require(path.resolve('./modules/restaurants/server/controllers/categories.server.controller'));
 
 /**
  * Create a Restaurant
@@ -182,7 +183,7 @@ exports.deleteMenu = function(req, res){
   	Restaurant.findOne({_id: req.param('restaurantId')}, function (err, restaurant){
 
 	    if (err) {
-	      console.log('categories.delete : ' + err);
+	      console.log('restaurant.deleteMenu : ' + err);
 	      return res.status(500).send({
 	        message: 'something went wrong'
 	      });
@@ -220,7 +221,7 @@ exports.deleteMenu = function(req, res){
 	    	restaurant.save(function (err){
 
 			   	if (err) {
-			      console.log('categories.delete 2 : ' + err);
+			      console.log('restaurant.deleteMenu 2 : ' + err);
 			      return res.status(500).send({
 			        message: 'something went wrong'
 			      });
@@ -230,7 +231,25 @@ exports.deleteMenu = function(req, res){
 			    //I can't let them on the database for nothing.
 			    //IMPORTANT !!!! \\
 
-	    		return res.jsonp(restaurant);
+			    console.log(categoriesToDelete);
+			    if(categoriesToDelete.length > 0){
+				    categoryCtrl.deleteCategories(categoriesToDelete, function (err, cats){
+
+					    if (err) {
+					      console.log('restaurant.deleteMenu 3 : ' + err);
+					      return res.status(500).send({
+					        message: 'something went wrong'
+					      });
+					    }
+
+					    if(cats){
+					    	return res.jsonp(restaurant);
+					    }
+
+				    });
+			    }else{
+			    	return res.jsonp(restaurant);
+			    }
 	    	});
 	    }
   });
@@ -271,13 +290,11 @@ exports.setMainMenu = function(restoId, menuId, callback){
 			i++;
 		});
 
-
 		restaurant.save(function (err){
 			if (err) {
 				console.log('categories.setMainMenu 2 : ' + err);
 				return err;
 			}
-
 
 			console.log(menuId + '=======');
 			i = 0;

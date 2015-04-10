@@ -211,7 +211,6 @@ exports.delete = function(req, res) {
 
       return res.jsonp(restaurant);
     }
-
   });
 
   // var restaurant = req.restaurant;
@@ -227,4 +226,31 @@ exports.delete = function(req, res) {
   // });
 };
 
+exports.deleteCategories = function(categoriesIds, callback){
+
+  Category.find()
+          .where('_id')
+          .in(categoriesIds)
+          .exec(function (err, categories){
+
+    if(err)
+      return callback(err);
+
+    if(!categories)
+      return callback('not found');
+
+    if(categories){
+      console.log('my categories here');
+      console.log(categories);
+
+        categories.remove(function(err) {
+          if (err) {
+           return callback(err);
+          } else {
+            return callback(null, categoriesIds);
+          }
+        });
+    }
+  });
+};
 

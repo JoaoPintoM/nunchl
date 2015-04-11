@@ -36,7 +36,6 @@
                 </div>
               </div>
             </div>
-
         </div>
         <br />
 
@@ -54,7 +53,7 @@
                       <span ng-click="editingCategory = true; selectCategory($index)"><i class="fa fa-pencil-square-o">edit</i></span>
                     </div>
                     <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
-                      {{category.name}}
+                      <h4>{{category.name}}</h4>
                     </div>
                   </div>
 
@@ -75,7 +74,14 @@
                 <!-- </div> -->
 
              <!--  </div> -->
-         
+
+              <div class="list-group">
+                <a data-ng-repeat="meal in category.meals" data-ng-href="/#" class="list-group-item">
+                    <small class="list-group-item-text">
+                      {{meal.name}}
+                    </small>
+                </a>
+              </div>
     </div>
   </div>
 </div>

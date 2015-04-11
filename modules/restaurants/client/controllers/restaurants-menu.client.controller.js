@@ -133,14 +133,24 @@ angular.module('restaurants').controller('MenuController', ['$scope', '$statePar
 
     // Remove existing Restaurant
     $scope.removeCategory = function( category ) {
-        if ( category ) { 
+        if ( category ) {
+          $scope.loading = true;
             category.$remove({
                 restaurantId: $stateParams.restaurantId,
                 menuId:$stateParams.menuId,
                 categoryId: category._id
             }, function(data){
-                console.log('before data');
-                console.log(data);
+                $scope.loading = false;
+
+                var indexTODEL = -1;
+                $.each($scope.categories, function(index, cat ) {
+                  if(cat._id.toString() === data._id)
+                    indexTODEL = index;
+                });
+
+                if(indexTODEL !== -1)
+                  $scope.categories.splice(indexTODEL, 1);
+
             });
 
             // for (var i in $scope.restaurants ) {

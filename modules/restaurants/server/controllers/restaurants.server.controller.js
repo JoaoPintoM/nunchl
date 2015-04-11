@@ -24,7 +24,7 @@ exports.create = function(req, res) {
 		active: true,
 		categories: []
 	});
-	
+
 	// console.log(restaurant.menus);
 	restaurant.save(function(err) {
 		if (err) {
@@ -177,7 +177,6 @@ exports.createMenu = function (req, res){
 
 
 exports.deleteMenu = function(req, res){
-
   	var menuId = req.param('menuId');
 
   	Restaurant.findOne({_id: req.param('restaurantId')}, function (err, restaurant){
@@ -195,7 +194,6 @@ exports.deleteMenu = function(req, res){
 	      });
 
 	    if(restaurant){
-
 	    	var i = 0;
 	    	var toRemove = null;
 	    	var categoriesToDelete = [];
@@ -227,11 +225,10 @@ exports.deleteMenu = function(req, res){
 			      });
 			    }
 
-			    //there i NEED to delete the categories.. 
+			    //there i NEED to delete the categories..
 			    //I can't let them on the database for nothing.
 			    //IMPORTANT !!!! \\
 
-			    console.log(categoriesToDelete);
 			    if(categoriesToDelete.length > 0){
 				    categoryCtrl.deleteCategories(categoriesToDelete, function (err, cats){
 
@@ -280,9 +277,6 @@ exports.setMainMenu = function(restoId, menuId, callback){
 				message: 'restaurant not found'
 			};
 
-		console.log('BEFORE');
-		console.log(restaurant);
-
 		//first each to put everything as not active.
 		var i = 0;
 		_(restaurant.menus).forEach(function(m) {
@@ -296,7 +290,6 @@ exports.setMainMenu = function(restoId, menuId, callback){
 				return err;
 			}
 
-			console.log(menuId + '=======');
 			i = 0;
 			//for each to find the correct menu (workaround..)
 			_(restaurant.menus).forEach(function(m) {
@@ -319,4 +312,49 @@ exports.setMainMenu = function(restoId, menuId, callback){
 			});
 		});
 	});
+};
+
+exports.deleteCategoryFromMenu = function(req, categoryId, callback){
+
+  // active means if the category is duplicated into the 'menu' field
+  var isActive = false;
+
+  //find the category on the menus and delete it
+  _.forEach(req.restaurant.menus, function(menu, key) {
+    var catToDELETE = -1;
+    _.forEach(menu.categories, function(cat, _i) {
+      if(cat.toString() === categoryId.toString()){
+
+        catToDELETE = _i;
+
+        if(menu.active)
+          isActive = true;
+      }
+    });
+
+    if(catToDELETE !== -1){
+      menu.categories.splice(catToDELETE, 1);
+    }
+
+    if(isActive){
+      catToDELETE = -1;
+
+      _.forEach(req.restaurant.menu, function(cat, _i) {
+        if(cat.toString() === categoryId.toString())
+          catToDELETE = _i;
+      });
+
+      if(catToDELETE !== -1){
+        req.restaurant.menu.splice(catToDELETE, 1);
+      }
+    }
+
+  });
+
+  req.restaurant.save(function(err){
+    if(err)
+      callback(err);
+    else
+      callback(null, true);
+  });
 };

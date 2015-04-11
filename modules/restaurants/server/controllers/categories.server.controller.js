@@ -5,7 +5,9 @@
  */
 var mongoose = require('mongoose'),
   path = require('path'),
+  async = require('async'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  restoCtrl = require(path.resolve('./modules/restaurants/server/controllers/restaurants.server.controller')),
   Restaurant = mongoose.model('Restaurant'),
   Category = mongoose.model('Category'),
   Meal = mongoose.model('Meal'),
@@ -189,41 +191,20 @@ exports.read = function (req, res){
  */
 exports.delete = function(req, res) {
   console.log(' = = = = = = = = ');
-  console.log(req.param('restaurantId'));
-  console.log(req.param('categoryId'));
-
-  Restaurant.findOne({_id: req.param('restaurantId')}, function (err, restaurant){
+  var restaurantId  = req.param('restaurantId');
+  var categoryId = req.param('categoryId');
 
 
-    if (err) {
-      console.log('categories.delete : ' + err);
-      return res.status(500).send({
-        message: 'something went wrong'
-      });
-    }
+  Category.findOne({_id: categoryId}, function (err, category){
 
-    if (!restaurant)
-      return res.status(404).send({
-        message: 'Not found'
-      });
+    restoCtrl.deleteCategoryFromMenu(req, categoryId,
+      function (_err, result){
 
-    if(restaurant){
+        if(result)
+          return res.jsonp(category);
 
-      return res.jsonp(restaurant);
-    }
+    });
   });
-
-  // var restaurant = req.restaurant;
-
-  // restaurant.remove(function(err) {
-  //   if (err) {
-  //     return res.status(400).send({
-  //       message: errorHandler.getErrorMessage(err)
-  //     });
-  //   } else {
-  //     res.jsonp(restaurant);
-  //   }
-  // });
 };
 
 exports.deleteCategories = function(categoriesIds, callback){
@@ -243,13 +224,28 @@ exports.deleteCategories = function(categoriesIds, callback){
       console.log('my categories here');
       console.log(categories);
 
-        categories.remove(function(err) {
+      //we delete all the categories one by one
+      async.each(categories, function (cat, _cb) {
+
+        cat.remove(function(err) {
           if (err) {
-           return callback(err);
+           return _cb(err);
           } else {
-            return callback(null, categoriesIds);
+            return _cb();
           }
         });
+
+      }, function(err){
+          // if any of the file processing produced an error, err would equal that error
+          if( err ) {
+            // One of the iterations produced an error.
+            // All processing will now stop.
+            console.log('error when deleting categories ' + err);
+          } else {
+            console.log('everything deleted');
+            callback(null, true);
+          }
+      });
     }
   });
 };

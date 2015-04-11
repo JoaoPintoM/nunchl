@@ -32,7 +32,7 @@ module.exports = function(app) {
 
 
 	//CATEGORIES============||||||
-	app.route('/api/restaurants/:restaurantId/menus/:menuId/categories')
+	app.route('/api/restaurants/:restaurantId/menus/:menuId/categories').all(restaurantsPolicy.isAllowed)
 		 .get(categories.list)
 		 .post(categories.create);
 

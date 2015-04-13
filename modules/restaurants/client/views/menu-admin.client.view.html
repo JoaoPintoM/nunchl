@@ -36,9 +36,9 @@
                 </div>
               </div>
             </div>
-        </div>
+          </div>
         <br />
-
+      </div>
 
         <div ng-repeat="category in categories" id="sortable">
 
@@ -53,7 +53,7 @@
                       <span ng-click="editingCategory = true; selectCategory($index)"><i class="fa fa-pencil-square-o">edit</i></span>
                     </div>
                     <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
-                      <h4>{{category.name}}</h4>
+                      <h4 ng-click="selectCategory($index)">{{category.name}}</h4>
                     </div>
                   </div>
 
@@ -82,8 +82,110 @@
                     </small>
                 </a>
               </div>
-    </div>
-  </div>
+          </div>
+        </div>
+
+
+
+                <div class="MenuGrid" id="id_meals">
+          <!-- @*ADD New Meal..*@ -->
+          <h2>{{categories[selectedCategory].name}}</h2>
+          <div ng-show="selectedCategory != -1" class="tag">
+            <div class="jcontainerAdd">
+              <div ng-hide="newMeal" ng-click="newMeal = true; SetValidationNumeric()">
+                <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                  <i class="fa fa-plus-circle fa-lg"></i> <b ng-click="newMeal = true">New {{categories[selectedCategory].name}} Meal</b>
+                </div>
+              </div>
+              <div ng-show="newMeal">
+                <b>Mealsname + Price</b>
+                <div class="form-horizontal">
+                  <div class="form-group input-group" style="width:80%; margin:auto;">
+                    <input type="text" class="form-control" ng-model="mName" placeholder="mealName" value="{{nName}}" />
+                    <input type="text" class="form-control pricesInputs" ng-model="mPrice" placeholder="Price: eg. 7.99" />
+                    <input type="hidden" ng-model="mo" placeholder="eg. 15.50" value="{{mo = categories[selectedCategory].meals[categories[selectedCategory].meals.length - 1].Order + 1000}}" />
+                    <br /><br />
+                    <button class="form-control" ng-click="newMeal = false; addMeal(mName, categories[selectedCategory]._id , mPrice, mo)">New</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div ng-repeat="Meal in categories[selectedCategory].meals">
+            <div ng-click="showAddMealItem = true">
+              <div class="tag" ng-class="{ 'selected_tag': $index == selectedMeal }">
+                <div class="jContainer">
+                  <!-- @*Default*@ -->
+                  <div ng-hide="editMeal">
+                    <span class="jC_editImage"><i class="fa fa-cogs" ng-click="editOptionsMeals(Meal.Name, $index, Meal)"></i></span>
+                    <img ng-if="!Meal.image" src="img/demo_restaurant_medium.jpg" style="cursor:pointer" ng-click="selectMeal($index, Meal.Id);editOptionsMeals(Meal.Name, $index, Meal)" alt="" />
+                    <img ng-if="Meal.image" ng-src="{{Meal.image}}" style="cursor:pointer" ng-click="selectMeal($index, Meal.Id);editOptionsMeals(Meal.Name, $index, Meal)" alt="" />
+                    <div class="jCPrice">
+                      <span ng-click="editMeal = true; SetValidationNumeric()"><i class="fa fa-pencil-square-o">e</i></span>
+                    </div>
+                    <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                      {{Meal.name}} + {{Meal._id}}
+                    </div>
+                  </div>
+                  <!-- @*Edit stuff (non visible by default)*@ -->
+                  <div ng-show="editMeal">
+                    <div class="form-horizontal">
+                      <div class="form-group input-group" style="width: 80%;margin: auto; padding:5px, 0, 5px, 0">
+                        <input ng-model="Meal.name" class="form-control" type="text" placeholder="Meal's Name'">
+                        <input ng-model="Meal.price" class="form-control pricesInputs" placeholder="Price">
+                        <br /><br />
+                        <button class="form-control" ng-click="editMeal = false; editMealFunction(Meal)">Edit</button>
+                        <br /><span ng-click="DeleteMeal(Meal, categories[selectedCategory])" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                          <i class="fa fa-pencil-square-o">Delete</i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal -->
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="color:black;">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body" id="myModalBody" style="height: 50%; overflow:auto;">
+                  <ul>
+                    <li ng-repeat="category in categories">
+                      <div ng-if="category.Meals.length > 0">
+                        <b>{{category.Name}}</b><br />---------------
+                        <div style="padding-left:10px;" ng-repeat="meal in category.Meals">
+                          <div ng-if="meal.MealItems.length > 0" ng-click="AddSameAs(meal)">
+                            <b>[{{meal.Name}}]</b> //
+                            <span ng-repeat="item in meal.MealItems">
+                              {{item.Name}}<span ng-if="$index < meal.MealItems.length - 1">, </span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <br />
+                    </li>
+                  </ul>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" id="closeModal" data-dismiss="modal">Close</button>
+                  @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br /><br />
+        <p id="great"></p>
+      </div>
+
+
+
 </div>
 
 </section>

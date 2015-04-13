@@ -13,32 +13,38 @@ var mongoose = require('mongoose'),
 
 //Meals!!
 
+/**
+ * Meal middleware
+ */
+exports.mealByID = function(req, res, next, id) { Meal.findById(id).exec(function(err, meal) {
+    if (err) return next(err);
+    if (! meal) return next(new Error('Failed to load meal ' + id));
+    req.meal = meal ;
+    next();
+  });
+};
+
+exports.read = function(req, res){
+  return res.jsonp(req.meal);
+};
+
 
 exports.update = function(req, res){
 
   console.log('NUNCHL ROCKS !');
 
-  Meal.findById(req.param('mealId')).exec(function(err, meal){
+  var meal = _.extend(req.meal, req.body);
+  meal.save(function(err){
     if (err)
-      return errorHandler.dealWithError500(err, 'meals.update 1', res);
+      return errorHandler.dealWithError500(err, 'meals.create 2', res);
 
-    if (!meal)
-      return res.status(404).send({message: 'Not found'});
-
-    meal = _.extend(meal, req.body);
-    meal.save(function(err){
-      if (err)
-        return errorHandler.dealWithError500(err, 'meals.create 2', res);
-
-      return res.jsonp(meal);
-    });
+    return res.jsonp(meal);
   });
+
 };
 
 
 exports.create = function(req, res) {
-
-  console.log('KICKING SOME ASS WITH NUNCHL !');
 
   var meal = new Meal(req.body);
 
@@ -50,30 +56,39 @@ exports.create = function(req, res) {
     } else {
       // saved
       //then we add at the correct category.
-      Category.findOne({_id: req.param('categoryId')})
-        .exec(function(err, category) {
+      req.category.meals.push(meal);
 
-        if (err)
-          return errorHandler.dealWithError500(err, 'meals.create 1', res);
-
-        if (!category)
-          return res.status(404).send({
-            message: 'Not found'
+      req.category.save(function(err){
+        if (err) {
+          console.log('meals.create 2 : ' + err);
+          return res.status(500).send({
+            message: 'something went wrong'
           });
+        }
 
-          category.meals.push(meal);
-
-          category.save(function(err){
-            if (err) {
-              console.log('meals.create 2 : ' + err);
-              return res.status(500).send({
-                message: 'something went wrong'
-              });
-            }
-
-            return res.jsonp(meal);
-          });
+        return res.jsonp(meal);
       });
     }
   });
+
+};
+
+
+/**
+ * Delete a Category
+ */
+exports.delete = function(req, res) {
+  console.log(' = = = = = = = = ');
+
+  req.meal.remove(function (err){
+    return res.jsonp(req.meal);
+  });
+
+  // restoCtrl.deleteCategoryFromMenu(req, req.category._id,
+  //   function (_err, result){
+
+  //     if(result)
+  //       return res.jsonp(req.category);
+
+  // });
 };

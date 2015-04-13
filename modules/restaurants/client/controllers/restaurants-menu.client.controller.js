@@ -8,8 +8,8 @@ var firstClickToOpen = false;
 var MEALIMAGE_WIDTH = 310 ;
 var MEALIMAGE_HEIGHT = 140 ;
 
-angular.module('restaurants').controller('MenuController', ['$scope', '$stateParams', '$location', 'Authentication', 'Restaurants', 'Categories',
-  function($scope, $stateParams, $location, Authentication, Restaurants, Categories) {
+angular.module('restaurants').controller('MenuController', ['$scope', '$stateParams', '$location', 'Authentication', 'Restaurants', 'Categories', 'Meals',
+  function($scope, $stateParams, $location, Authentication, Restaurants, Categories, Meals) {
     $scope.authentication = Authentication;
 
     $scope.selectedCategory = -1;
@@ -57,7 +57,6 @@ angular.module('restaurants').controller('MenuController', ['$scope', '$statePar
         $scope.error = errorResponse.data.message;
       });
     };
-
 
     $scope.selectCategory = function ($index) {
         $scope.selectedCategory = $index;
@@ -150,68 +149,59 @@ angular.module('restaurants').controller('MenuController', ['$scope', '$statePar
 
                 if(indexTODEL !== -1)
                   $scope.categories.splice(indexTODEL, 1);
-
             });
 
-            // for (var i in $scope.restaurants ) {
-            //     if ($scope.restaurants [i] === restaurant ) {
-            //         $scope.restaurants.splice(i, 1);
-            //     }
-            // }
         } else {
             console.log('else');
-            // $scope.restaurant.$remove(function() {
-            //     $location.path('restaurants');
-            // });
         }
     };
 
-    // $scope.addMeal = function (mealName, catId, mealPrice,  mealOrder) {
+    $scope.addMeal = function (mealName, catId, mealPrice,  mealOrder) {
 
-    //     if (mealName === null || !mealName) {
-    //         alert('Name cannot be null');
-    //     }
-    //     else {
-    //         $scope.loading = true;
+        if (mealName === null || !mealName) {
+            alert('Name cannot be null');
+        }
+        else {
+            $scope.loading = true;
 
-    //         var meal = new Meals({
-    //           name: mealName,
-    //           price: mealPrice
-    //         });
+            var meal = new Meals({
+              name: mealName,
+              price: mealPrice
+            });
 
-    //         meal.$save({categoryId:catId}, function(data) {
+            meal.$save({categoryId:catId}, function(data) {
 
-    //             $scope.categories[$scope.selectedCategory].meals.push(data);
+                $scope.categories[$scope.selectedCategory].meals.push(data);
 
-    //             // categoryName = null;
-    //             $scope.loading = false;
-    //             // $scope.$apply();
+                // categoryName = null;
+                $scope.loading = false;
+                // $scope.$apply();
 
-    //         }, function(errorResponse) {
-    //           alert(errorResponse.data.message);
-    //           $scope.error = errorResponse.data.message;
-    //         });
-    //     }
-    // };
+            }, function(errorResponse) {
+              alert(errorResponse.data.message);
+              $scope.error = errorResponse.data.message;
+            });
+        }
+    };
 
 
-    // $scope.editMealFunction = function(m){
+    $scope.editMealFunction = function(m){
 
-    //   var meal = new Meals(m);
+      var meal = new Meals(m);
 
-    //   meal.$update({
-    //     categoryId:$scope.categories[$scope.selectedCategory]._id,
-    //     mealId: m._id}, function(data) {
+      meal.$update({
+        categoryId:$scope.categories[$scope.selectedCategory]._id,
+        mealId: m._id}, function(data) {
 
-    //       $scope.loading = false;
-    //       $scope.categories[$scope.selectedCategory].meals[$scope.selectedMeal] = data;
-    //       // $scope.$apply();
+          $scope.loading = false;
+          $scope.categories[$scope.selectedCategory].meals[$scope.selectedMeal] = data;
+          // $scope.$apply();
 
-    //   }, function(errorResponse) {
-    //     alert(errorResponse.data.message);
-    //     $scope.error = errorResponse.data.message;
-    //   });
-    // };
+      }, function(errorResponse) {
+        alert(errorResponse.data.message);
+        $scope.error = errorResponse.data.message;
+      });
+    };
 
     var isEditingMealImage = false; // special case for meal image
 
@@ -229,6 +219,36 @@ angular.module('restaurants').controller('MenuController', ['$scope', '$statePar
     //     $scope.searchInput = $scope.categories[$scope.selectedCategory].name;
     //     // $scope.SeachForImages();
     // };
+
+
+     // Remove existing Restaurant
+    $scope.DeleteMeal = function( meal, category ) {
+        if ( meal ) {
+          $scope.loading = true;
+
+            var m = new Meals(meal);
+
+            m.$remove({
+                categoryId: category._id
+            }, function(data){
+                $scope.loading = false;
+
+                var indexTODEL = -1;
+
+                $.each(category.meals, function(i, meal){
+                  if(meal._id.toString() === data._id)
+                    indexTODEL = i;
+                });
+
+                if(indexTODEL !== -1)
+                  category.meals.splice(indexTODEL, 1);
+
+            });
+
+        } else {
+            console.log('else');
+        }
+    };
 
 
     // $scope.editOptionsCats = function (searchName, $index) {

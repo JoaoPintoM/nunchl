@@ -7,6 +7,7 @@ module.exports = function(app) {
 	var restaurantsPolicy = require('../policies/restaurants.server.policy');
 
 
+
 	// Restaurants Routes
 	app.route('/api/restaurants').all()
 		.get(restaurants.list).all(restaurantsPolicy.isAllowed)
@@ -42,7 +43,18 @@ module.exports = function(app) {
 		 .delete(categories.delete);
 	//CATEGORIES============||||||
 
+  //MEALS============||||||
+  app.route('/api/categories/:categoryId/meals')
+    .post(meals.create);
+
+  app.route('/api/categories/:categoryId/meals/:mealId')
+    .get(meals.read)
+    .put(meals.update)
+    .delete(meals.delete);
+  //MEALS============||||||
 
 	// Finish by binding the Restaurant middleware
 	app.param('restaurantId', restaurants.restaurantByID);
+  app.param('categoryId', categories.categoryByID);
+  app.param('mealId', meals.mealByID);
 };

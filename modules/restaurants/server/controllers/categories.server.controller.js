@@ -16,6 +16,18 @@ var mongoose = require('mongoose'),
 
 //Categories!!
 
+/**
+ * Category middleware
+ */
+exports.categoryByID = function(req, res, next, id) { Category.findById(id).exec(function(err, category) {
+    if (err) return next(err);
+    if (! category) return next(new Error('Failed to load category ' + id));
+    req.category = category ;
+    next();
+  });
+};
+
+
 //retrieve categories from a restaurant
 exports.list = function (req, res){
 
@@ -161,7 +173,6 @@ exports.create = function(req, res) {
 };
 
 
-
 exports.read = function (req, res){
 
   Restaurant.findOne({_id: req.param('restaurantId')})
@@ -192,18 +203,17 @@ exports.read = function (req, res){
 exports.delete = function(req, res) {
   console.log(' = = = = = = = = ');
   var restaurantId  = req.param('restaurantId');
-  var categoryId = req.param('categoryId');
 
+  restoCtrl.deleteCategoryFromMenu(req, req.category._id,
+    function (_err, result){
 
-  Category.findOne({_id: categoryId}, function (err, category){
+      if(result){
 
-    restoCtrl.deleteCategoryFromMenu(req, categoryId,
-      function (_err, result){
+        req.category.remove(function (err){
+          return res.jsonp(req.category);
+        });
 
-        if(result)
-          return res.jsonp(category);
-
-    });
+      }
   });
 };
 

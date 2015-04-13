@@ -13,6 +13,20 @@ function($resource) {
 	});
 }])
 
+.factory('Meals', ['$resource',
+  function($resource) {
+    return $resource('api/categories/:categoryId/meals/:mealId', {
+      categoryId: '@_catId',
+      mealId: '@_id'
+    }, {
+      update: {
+        method: 'PUT'
+      }
+    });
+  }
+])
+
+
 .factory('Categories', ['$resource',
   function($resource) {
     return $resource('api/restaurants/:restaurantId/menus/:menuId/categories/:categoryId', {

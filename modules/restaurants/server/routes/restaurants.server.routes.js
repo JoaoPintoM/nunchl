@@ -4,6 +4,7 @@ module.exports = function(app) {
 	var restaurants = require('../controllers/restaurants.server.controller');
 	var categories = require('../controllers/categories.server.controller');
 	var meals = require('../controllers/meals.server.controller');
+  var preorders = require('../controllers/preorders.server.controller');
 	var restaurantsPolicy = require('../policies/restaurants.server.policy');
 
 
@@ -53,8 +54,13 @@ module.exports = function(app) {
     .delete(meals.delete);
   //MEALS============||||||
 
+
+  //PREORDERS============||||||
+  //PREORDERS============||||||
+
 	// Finish by binding the Restaurant middleware
 	app.param('restaurantId', restaurants.restaurantByID);
   app.param('categoryId', categories.categoryByID);
   app.param('mealId', meals.mealByID);
+  app.param('preorderId', preorders.preorderByID);
 };

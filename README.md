@@ -1,6 +1,12 @@
 <!-- [![MEAN.JS Logo](http://meanjs.org/img/logo-small.png)](http://meanjs.org/) -->
 
-Nunchl Project
+nunchl project
+===================
+> *[www.nunchl.com](http://www.nunchl.com/)*
+
+>  **Welcome to the nunchl project**
+
+> - we are still in development
 
 ## Before You Begin
 Before you begin we recommend you read about the basic building blocks that assemble a MEAN.JS application:

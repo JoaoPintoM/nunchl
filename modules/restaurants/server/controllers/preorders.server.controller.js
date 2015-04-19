@@ -55,8 +55,9 @@ exports.update = function(req, res) {
       });
     } else {
 
-      var socketio = req.app.get('socketio'); // tacke out socket instance from the app container
-      socketio.to(preorder.userId).emit('preorder.update', preorder); // emit an event for all connected clients
+      //SOCKET IO </!!\>
+      // var socketio = req.app.get('socketio'); // tacke out socket instance from the app container
+      // socketio.to(preorder.userId).emit('preorder.update', preorder); // emit an event for all connected clients
 
       res.jsonp(preorder);
     }

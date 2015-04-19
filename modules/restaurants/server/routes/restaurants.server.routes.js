@@ -8,22 +8,24 @@ module.exports = function(app) {
 	var restaurantsPolicy = require('../policies/restaurants.server.policy');
 
 
-
 	// Restaurants Routes
 	app.route('/api/restaurants').all()
 		.get(restaurants.list).all(restaurantsPolicy.isAllowed)
 		.post(restaurants.create);
+
+  app.route('/api/restaurants/:restaurantId/menu')
+    .get(restaurants.menu);
 
 	app.route('/api/restaurants/:restaurantId').all(restaurantsPolicy.isAllowed)
 		.get(restaurants.read)
 		.put(restaurants.update)
 		.delete(restaurants.delete);
 
+
 	//MENUS============||||||
 	app.route('/api/restaurants/:restaurantId/menus').all(restaurantsPolicy.isAllowed)
 		.get(restaurants.menuList)
 		.post(restaurants.createMenu);
-		// .delete(restaurants.deleteMenu);
 
 	app.route('/api/restaurants/:restaurantId/menus/:menuId')
 		.delete(restaurants.deleteMenu);
@@ -44,6 +46,7 @@ module.exports = function(app) {
 		 .delete(categories.delete);
 	//CATEGORIES============||||||
 
+
   //MEALS============||||||
   app.route('/api/categories/:categoryId/meals')
     .post(meals.create);
@@ -56,9 +59,21 @@ module.exports = function(app) {
 
 
   //PREORDERS============||||||
+  app.route('/api/preorders')
+    .get(preorders.list)
+    .post(preorders.create);
+
+  app.route('/api/preorders/:restaurantId/live')
+    .get(preorders.hasAuthForThisRestaurant, preorders.listByRestaurant);
+
+  app.route('/api/preorders/:preorderId')
+    .get(preorders.read)
+    .put(preorders.hasAuthorization, preorders.update)
+    .delete(preorders.hasAuthorization, preorders.delete);
   //PREORDERS============||||||
 
-	// Finish by binding the Restaurant middleware
+
+	// Finish by binding the Restaurant parameters middleware
 	app.param('restaurantId', restaurants.restaurantByID);
   app.param('categoryId', categories.categoryByID);
   app.param('mealId', meals.mealByID);

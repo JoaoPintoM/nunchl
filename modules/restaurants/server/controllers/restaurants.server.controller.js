@@ -7,9 +7,11 @@ var _ = require('lodash'),
 	path = require('path'),
 	mongoose = require('mongoose'),
 	Restaurant = mongoose.model('Restaurant'),
+  Meal = mongoose.model('Meal'),
 	User = mongoose.model('User'),
 	errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-	categoryCtrl = require(path.resolve('./modules/restaurants/server/controllers/categories.server.controller'));
+	categoryCtrl = require(path.resolve('./modules/restaurants/server/controllers/categories.server.controller')),
+  colors = require('colors');
 
 /**
  * Create a Restaurant
@@ -65,6 +67,25 @@ exports.read = function(req, res) {
 	res.jsonp(req.restaurant);
 };
 
+
+/**
+ * Show the current restaurant's Menu
+ */
+exports.menu = function(req, res) {
+
+  console.log('get that menu plz :)' .red);
+
+  Meal.populate(req.restaurant,{
+        path: 'menu.meals'
+        // select: 'name price mealItems'
+        // model: Meal // <== We are populating phones so we need to use the correct model, not User
+      }, function (err, meals) {
+
+    return res.jsonp(meals);
+  });
+};
+
+
 /**
  * Update a Restaurant
  */
@@ -118,7 +139,13 @@ exports.list = function(req, res) { Restaurant.find().sort('-created').populate(
 /**
  * Restaurant middleware
  */
-exports.restaurantByID = function(req, res, next, id) { Restaurant.findById(id).populate('user', 'displayName').exec(function(err, restaurant) {
+exports.restaurantByID = function(req, res, next, id) {
+  console.log('hello' .red);
+  console.log(id);
+  Restaurant.findById(id)
+            .populate('user', 'displayName')
+            .populate('menu')
+            .exec(function(err, restaurant) {
 		if (err) return next(err);
 		if (! restaurant) return next(new Error('Failed to load Restaurant ' + id));
 		req.restaurant = restaurant ;

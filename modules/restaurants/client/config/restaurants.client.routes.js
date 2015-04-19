@@ -1,7 +1,7 @@
 'use strict';
 
 //Setting up route
-angular.module('restaurants').config(['$stateProvider',
+angular.module('restaurants', ['mgcrea.ngStrap']).config(['$stateProvider',
 	function($stateProvider) {
 		// Restaurants state routing
 		$stateProvider.
@@ -26,6 +26,10 @@ angular.module('restaurants').config(['$stateProvider',
 	    //     expect($stateParams).toBe({pageNum: 2});
 	    // }
 		}).
+    state('restaurants.viewNchl', {
+      url: '/nchl/:restaurantId',
+      templateUrl: 'modules/restaurants/views/nchl-view-restaurant.client.view.html'
+    }).
 		state('restaurants.view', {
 			url: '/:restaurantId',
 			templateUrl: 'modules/restaurants/views/view-restaurant.client.view.html'

@@ -1,0 +1,603 @@
+<section data-ng-controller="Restaurants-nchl-Controller" data-ng-init="findOne()">
+
+<!-- <link href="~/Content/toastr.css" rel="stylesheet" />
+
+<script src="~/Scripts/jquery-2.1.1.min.js"></script>
+<script src="~/Scripts/js/jquery-ui.js"></script> -->
+
+
+<!-- <link href="~/Content/css/angular-motion.min.css" rel="stylesheet" />
+<link href="~/Content/css/bootstrap-additions.min.css" rel="stylesheet" /> -->
+<!-- <link rel="stylesheet" href="~/Content/MenuStyle.css"> -->
+<!-- <link href="~/Content/css/responsive.css" rel="stylesheet" /> -->
+
+<!-- <link href="~/Content/css/Pickers/default.css" rel="stylesheet" />
+<link href="~/Content/css/Pickers/default.date.css" rel="stylesheet" />
+<link href="~/Content/css/Pickers/default.time.css" rel="stylesheet" /> -->
+
+
+<!--[if IE 7]>
+  <link rel="stylesheet" href="~/Content/css/font-awesome-ie7.min.css">
+<![endif]-->
+
+<style>
+    .toggle {
+        -webkit-transition: linear 0.3s;
+        -moz-transition: linear 0.3s;
+        -ms-transition: linear 0.3s;
+        -o-transition: linear 0.3s;
+        transition: linear 0.3s;
+    }
+
+        .toggle.ng-enter {
+            opacity: 0;
+        }
+
+        .toggle.ng-enter-active {
+            opacity: 1;
+        }
+
+        .toggle.ng-leave {
+            opacity: 1;
+        }
+
+        .toggle.ng-leave-active {
+            opacity: 0;
+        }
+
+
+    #overlay {
+        position: fixed;
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        overflow: show;
+        margin: auto;
+        display: table;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+        #overlay i {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+    .spin-big {
+        font-size: 50px;
+        height: 50px;
+        width: 50px;
+    }
+</style>
+
+<div id="myMenu">
+
+    <div ng-if="isLoading()" id="overlay">
+        <i class="fa fa-spinner fa-spin spin-big"></i>
+    </div>
+
+    <div class="nunchl-menu">
+
+        <div class="nunchl-left-menu">
+
+            <div class="row hearderMenu">
+                <div class="col-xs-3" style="width:165px">
+
+                    <img alt="restaurantImage" class="img-circle" src="{{restaurant.logo}}" style="width:160px">
+                </div>
+                <div class="col-xs-3 headerMenuCol">
+                    <span>{{restaurant.name}}</span> <br />
+                    <span>rue des champs</span>
+                </div>
+                <div class="col-xs-3 headerMenuCol">
+                    <span>Fake 02 990 39 38</span> <br />
+                    <span>Ouvert du Lundi au Samedi De 10h à 22h</span>
+                </div>
+                <div class="col-xs-3 headerMenuCol">
+                    <span>{{restaurant.description}}</span>
+                </div>
+            </div>
+
+            <!-- @*MODAL CONFIRMATION*@ -->
+            <script type="text/ng-template" id="myModalContent.html">
+                <div id="myModal" class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                                <h4 class="modal-title">{{restaurant.menu[selectedCategory].meals[selectedMeal].name}}</h4>
+                            </div>
+                            <div class="modal-body">
+
+
+                                <!-- @*SubItems*@ -->
+                                <div class="MenuGrid-Options" id="id_mealItems">
+
+                                    <div ng-if="restaurant.menu[selectedCategory].meals[selectedMeal].mealItems.length == 0">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <img ng-show="!menu.Categories[selectedCategory].Meals[selectedMeal].Image" style="width:200px;" src="../../Content/img/no-image.png" alt="" />
+                                                <img ng-show="menu.Categories[selectedCategory].Meals[selectedMeal].Image" style="width:200px;" ng-src="../../Content/img/nchl/{{menu.Categories[selectedCategory].Meals[selectedMeal].Image}}" alt="" />
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <b>[{{restaurant.menu[selectedCategory].name}}]</b><br />
+                                                {{restaurant.menu[selectedCategory].meals[selectedMeal].name}}<br />
+                                                Price: {{restaurant.menu[selectedCategory].meals[selectedMeal].price}}
+                                                <br /><br />
+                                                Confirm ?
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- @*If OPTIONS*@ -->
+                                    <div ng-if="restaurant.menu[selectedCategory].meals[selectedMeal].mealItems.length > 0">
+                                        <h3>Options</h3>
+                                        <div class="row" style="width:100%; margin:auto;">
+                                            <div ng-repeat="subitem in restaurant.menu[selectedCategory].meals[selectedMeal].mealItems">
+
+                                                <div ng-show="!subitem.Choice" class="col-xs-3 col-without-padding-special">
+
+                                            <!--  <div class="optionContainer" ng-class="{ 'selectedOption': IsChecked($index) }" ng-click="selectSubItem($index, subitem.Id)" flowtype min-font="10" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                                                        <div style="width:100%;">{{subitem.Name}}</div>
+                                                        <p ng-show="subitem.Price > 0">{{subitem.Price.toFixed(2)}} <i class="fa fa-eur"></i></p>
+                                                        <p ng-show="subitem.Price == 0 && !subitem.Choice"><b>Free</b></p>
+                                                    </div> -->
+
+                                                    <div class="optionContainer" ng-class="{ 'selectedOption': IsChecked($index) }" ng-click="selectSubItem($index, subitem.Id)" flowtype min-font="10" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                                                            <div style="width:100%;">{{subitem}}</div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div ng-repeat="subitem in menu.Categories[selectedCategory].Meals[selectedMeal].MealItems">
+
+                                            <div ng-show="subitem.Choice">
+                                                @*IF CHOICE // THIS ONE*@
+                                                <h3>{{subitem.Name}}</h3>
+                                                <div class="row" style="width:100%; margin:auto;">
+
+                                                    @*ASTUCE ! pourquoi si compliqué.*@
+                                                    <input type="hidden" ng-model="data.message" />
+                                                    <span ng-init="data.message = -1"></span>
+
+                                                    <div class="col-xs-2 col-without-padding" ng-repeat="choice in subitem.Choices">
+                                                        <div class="optionContainer-choix" ng-click="data.message =$index; validateChoice($parent.$index, choice)" ng-class="{ 'selectedOption' : data.message ==$index }">
+                                                            <div style="width:100%;" flowtype min-font="10" max-font="60" font-ratio="14" line-ratio="1.5" minimum="100" maximum="2000">{{choice.Name}}</div>
+                                                            <p ng-show="choice.Price > 0">+ {{choice.Price.toFixed(2)}} @*<i class="fa fa-eur"></i>*@</p>
+                                                            @*<p ng-show="choice.Price == 0"><b>Free</b></p>*@
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+                                <button type="button" class="btn btn-success" ng-click="$hide(); AddPreOrder()"><i class="fa fa-shopping-cart"></i> ADD To Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </script>
+
+
+
+            <ul class="nav nav-tabs" id="myTab">
+                <li class="active"><a href="#menu" data-toggle="tab">Menu</a></li>
+                <!-- @*<li><a href="#photos" data-toggle="tab">Photos</a></li>
+                    <li><a href="#avis" data-toggle="tab">Avis</a></li>
+                    <li><a href="#contact" data-toggle="tab">Contact</a></li>*@ -->
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="menu">
+
+
+                    <div class="MenuGrid" id="id_categories">
+
+                        <!-- @*Categories repeat*@ -->
+                        <!-- @*<h3>Categories</h3>*@ -->
+
+                        <div ng-repeat="category in restaurant.menu">
+                                <div ng-click="selectCategory($index)"
+                                     ng-show="$index == selectedCategory || firstTime"
+                                     class="tag">
+                                    <div class="jContainer">
+                                        <center>
+                                            <img ng-if="!category.image" ng-src="{{restaurant.logo}}" alt="" />
+                                            <img ng-if="category.image" ng-src="{{category.image}}" alt="" />
+                                        </center>
+                                        <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                                            {{category.name}}
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <!-- @*Reset Button*@ -->
+                        <div ng-click="resetCategory()" id="backCategoryButton">
+                            <div ng-if="selectedCategory != -1" class="tag">
+                                <div class="jcontainerAdd">
+                                    <div class="jC_cat_Name" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                                        <i class="fa fa-reply-all fa-2x"></i><br />
+                                        <b>Back to Categories</b>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="MenuGrid">
+                        <div ng-if="restaurant.menu[selectedCategory].meals.length > 0"><h3>Meals</h3></div>
+                        <div ng-repeat="Meal in restaurant.menu[selectedCategory].meals">
+                            <div class="tag"
+                                 ng-click="selectMeal($index, Meal._id);"
+                                 data-animation="am-fade-and-scale"
+                                 data-placement="center"
+                                 data-template="myModalContent.html" bs-modal="modal">
+
+                                    <div class="jContainer" ng-class="{ 'selected': $index == selectedMeal }">
+                                        <center>
+                                            <img ng-if="!Meal.image" ng-src="{{restaurant.logo}}" alt=" " />
+                                            <img ng-if="Meal.image" ng-src="{{Meal.image}}" alt="" />
+                                        </center>
+                                        <div class="jCPrice" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                                            <i class="fa fa-eur"></i> {{Meal.price.toFixed(2)}}
+                                        </div>
+                                        <div class="jCName" flowtype min-font="12" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                                            {{Meal.name}}
+                                        </div>
+                                    </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+<!--
+
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        //OLD ADD BUTTON
+                        @*<div ng-show="isOpen()" class="col-md-3" style="float:right">
+                                <div ng-click="AddPreOrder()" id="id_addMeal">
+                                    <div ng-show="selectedMeal != -1" class="btn btn-info btn-large"><i class="fa fa-plus-circle fa-2x pull-left"></i> Add to cart</div>
+                                </div>
+                            </div>*@
+                    }
+                    else
+                    {
+                        <br />
+                        <div style="text-align:center">
+                            <p>You must be connected to order on this restaurant</p>
+
+                            @Html.ActionLink("Log in", "Login", "Account", routeValues: new { returnUrl = Request.Url.ToString() }, htmlAttributes: new { @class = "buttonsRightMenu" })
+                            OR
+                            @Html.ActionLink("Register", "Register", "Account", routeValues: new { returnUrl = Request.Url.ToString() }, htmlAttributes: new { @class = "buttonsRightMenu" })
+
+                            <br /><br />
+                            <p class="strongBlue">Hurry up It's Free!</p>
+                        </div>
+                    } -->
+
+                    <br /><br /><br />
+                    <div class="clearfix">.</div>
+
+
+
+
+                </div>
+                <!-- @*// END MENU*@ -->
+                <!-- @*<div class="tab-pane fade" id="photos">.ezrz..</div>
+                    <div class="tab-pane fade" id="avis">..azrzrz.</div>
+                    <div class="tab-pane fade" id="contact">aazzaaa...</div>*@ -->
+            </div>
+
+        </div>
+
+
+<!-- ////////// RIGHT MENU *************
+    $$$$$$$$$$ ___________ ************* -->
+
+        <div class="nunchl-right-menu">
+            <div class="right-mid">
+
+                <div id="recapTitle">Recap</div>
+
+                <div ng-if="!restaurant.open">
+                        <center>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-primary typePreOrder active">
+                                    <input type="radio" name="options" id="option1" value="1" checked>A emporter
+                                </label>
+                                <label class="btn btn-primary typePreOrder" ng-click="clickOnSelectType()">
+                                    <input type="radio" name="options" id="option2" value="2">Manger sur place
+                                </label>
+                            </div>
+
+                            <br />
+
+                            <div ng-hide="preorder.meals.length > 0" style="padding-top:40px; padding-left:5px; padding-right:5px;">
+                                <span>NoItemSelected</span>
+                                <span>SelectItemToPreorder</span>
+                            </div>
+                        </center>
+
+                        <div class="recapItem" ng-repeat="Meal in preorder.meals" ng-class="{ 'coloredRecapLine': $index % 2 }">
+                            <div class="right" flowtype min-font="24" max-font="60" font-ratio="14" line-ratio="1" minimum="100" maximum="2000">
+                                € {{Meal.price.toFixed(2)}}
+                                <div class="options">
+                                    Quantity
+                                    <center>
+                                        <table style="color:white">
+                                            <tr>
+                                                <td><i ng-show="Meal.Quantity > 1" ng-click="substractQuantity($index)" class="fa fa-minus-circle"></i></td>
+                                                <td>{{Meal.quantity}}</td>
+                                                <td><i ng-click="addQuantity($index)" class="fa fa-plus-circle"></i></td>
+                                            </tr>
+                                        </table>
+                                    </center>
+                                </div>
+
+                            </div>
+                            <div class="left">
+                                <span class="cName"><i ng-click="removePoItem($index)" class="fa fa-times-circle"></i> // {{Meal.js_CategoryName}}</span> <br />
+                                <span class="mName">{{Meal.js_MealName}}</span>
+
+
+
+                                <br />
+                                <i ng-hide="OpenCommentInput" class="fa fa-comment-o" ng-click="OpenCommentInput = true;" style="cursor:pointer;">
+
+                                    <span ng-if="Meal.Comment">
+                                        <i style="font-family:roboto">{{Meal.Comment}}</i>
+                                    </span>
+                                    <span ng-if="!Meal.Comment">
+                                        <i style="font-family:roboto; font-size:11px">add comment...</i>
+                                    </span>
+                                </i>
+
+
+                                <!-- @*---------------------------------comment section---------------------------------*@ -->
+                                <!-- @*<i ng-hide="OpenCommentInput" class="fa fa-comment-o" ng-click="OpenCommentInput = true;" style="cursor:pointer"> <span style="font-family:roboto">add comment...</span></i>*@ -->
+
+                                <div ng-show="OpenCommentInput" class="form-horizontal" style="margin-left:5px">
+                                    <div class="form-group input-group">
+                                        <input ng-model="iCommentModel" class="form-control" type="text" placeholder="your comment about this meal">
+                                        <span ng-click="OpenCommentInput = false; addComment(iCommentModel, $index);" class="input-group-addon"><i class="fa fa-check"></i></span>
+                                    </div>
+                                </div>
+
+
+                                <!-- @*//end comment section*@ -->
+
+                                <div ng-repeat="subitem in Meal.mealItems">
+                                    <!-- @*Standard*@  -->
+                                    <i class="mSubItem" ng-show="!subitem.js_choiceName">{{subitem.js_SubItem}} <span ng-show="subitem.js_SubItemPrice > 0"> +{{subitem.js_SubItemPrice}}</span></i>
+                                    <!-- @*Choice*@  -->
+                                    <i class="mSubItem" ng-show="subitem.js_choiceName"> - {{subitem.js_choiceName}} <span ng-show="subitem.js_choicePrice > 0"> +{{subitem.js_choicePrice}}</span></i>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+
+
+                <div ng-show="restaurant.open" class="opacityStuff">
+                    <h3>Nunchl Message</h3>
+                    <br />
+                    <i style="color:yellow"> <i class="fa fa-exclamation-triangle"></i>Restaurant Closed</i>
+                    <br />
+                    <br />
+                </div>
+            </div>
+
+            <div class="right-bot">
+              <div ng-show="!restaurant.open">
+                  <center><input id="ipickuptime" class="myTimePicker ipickuptime" type=text placeholder="Try me&hellip;"></center>
+                  <div class="price">Total: € {{preorder.total.toFixed(2)}}</div>
+                  <br />
+                  <div id="pb" ng-click="ValidatePreOrder()">
+                      <div id="progress">
+                          <div id="done">PickUpAt <span id="toTime"></span>!</div>
+                      </div>
+                      Pre_order
+                  </div>
+              </div>
+            </div>
+
+
+
+
+            <!-- @*<div ng-show="isOpen()" class="opacityStuff">
+                    <h3></h3>
+                    <table class="table">
+                        <tr ng-repeat="Meal in preorder.Meals">
+                            <td>
+                                <b></b>
+                                <div ng-repeat="subitem in Meal.MealItems">
+                                    <i></i>
+                                </div>
+                            </td>
+                            <td>
+                                <div style="text-align:right">
+                                    <i ng-show="Meal.Quantity > 1" ng-click="substractQuantity($index)" class="fa fa-minus-circle"></i>
+                                    <i ng-click="addQuantity($index)" class="fa fa-plus-circle"></i><br />
+                                </div>
+                            </td>
+                            <td><i ng-click="removePoItem($index)" class="fa fa-times-circle"></i></td>
+                        </tr>
+                    </table>
+                    <br />
+                    <center><input id="" class="myTimePicker" type=text placeholder="Try me&hellip;"></center>
+
+                    <h4></h4>
+                    <p></p>
+                    <center><span class="buton b_asset buton-1 buton-mini" ng-click="ValidatePreOrder()"><a href=""></a></span></center>
+                </div>
+
+                <div ng-show="!isOpen()" class="opacityStuff">
+                    <h3></h3>
+                    <br />
+                    <i style="color:yellow"><i class="fa fa-exclamation-triangle"></i></i>
+                    <br />
+                    <br />
+                </div>*@ -->
+        </div>
+
+    </div>
+    <!-- @*
+        </div>*@ -->
+
+
+           <!-- @*<a href="~/User/@User.Identity.GetUserName()/live"><span>PreOrders</span></a>*@ @*<a href="~/User/@User.Identity.GetUserName()/live"><span></span></a>*@
+           @*----------------------------- Toggle Box for Small Screens -----------------------------*@> -->
+    <div class="resto-menu-box">
+        <a class="info-toggle" href="#">
+            @if (!Request.IsAuthenticated)
+            {
+                <i class="fa fa-user"></i>
+            }
+            else
+            {
+                <i id="cartIcon" ng-show="preorder.Meals.length > 0" class="fa fa-shopping-cart"> {{preorder.Meals.length}}</i>
+                <i ng-show="preorder.Meals.length == 0" class="fa fa-shopping-cart"></i>
+            }
+        </a>
+        <div ng-show="isOpen()" class="menu-box-content">
+
+            @if (!Request.IsAuthenticated)
+            {
+                <div class="child">
+                    <h3>You're not logged</h3>
+                    <p>You must be connected if you want to preOrder on this restaurant</p>
+
+                    <br /><br /><br />
+                    <center>
+                        <div style="text-align:center">
+                            @Html.ActionLink("Log in", "Login", "Account", routeValues: new { returnUrl = Request.Url.ToString() }, htmlAttributes: new { @class = "buttonsRightMenu" })
+                            <br /><br /> OR  <br /><br />
+                            @Html.ActionLink("Register", "Register", "Account", routeValues: new { returnUrl = Request.Url.ToString() }, htmlAttributes: new { @class = "buttonsRightMenu" })
+                        </div>
+                    </center>
+                    <div class="clearfix">.</div>
+                </div>
+
+            }
+            else
+            {
+                <center>
+                    <div class="btn-group" data-toggle="buttons" ng-click="clickOnSelectTypeSmall()">
+                        <label class="btn btn-primary typePreOrderSmall active">
+                            <input type="radio" name="options" id="option1" value="1" checked>A emporter
+                        </label>
+                        <label class="btn btn-primary typePreOrderSmall">
+                            <input type="radio" name="options" id="option2" value="2">Manger sur place
+                        </label>
+                    </div>
+                </center>
+
+                <br />
+
+                <div ng-hide="preorder.Meals.length > 0">
+                    <span>You have selected any item.</span>
+                    <br /><br />
+                    <span>Select at least one item if you want to preOrder food on this restaurant</span>
+                </div>
+
+                <div ng-show="preorder.Meals.length > 0">
+                    @*<h4>Select Pickup Time</h4>
+                        <select class="form-control" id="pickSelect"></select>*@
+
+
+
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="pickSelect" class="col-xs-7 control-label" style="text-align:right;">Select Pickup Time</label>
+                            <div class="col-xs-5">
+                                <select class="form-control" id="pickSelect" style="text-align:center;"></select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <table style="width:100%">
+                    <tbody ng-repeat="Meal in preorder.Meals">
+                        <tr>
+                            <td><b>{{Meal.js_MealName}}</b></td>
+                            <td>€ {{Meal.Price.toFixed(2)}}  //</td>
+                            <td>
+                                <i ng-show="Meal.Quantity > 1" ng-click="substractQuantity($index)" class="fa fa-minus-circle"></i>
+                                {{Meal.Quantity}}
+                                <i ng-click="addQuantity($index)" class="fa fa-plus-circle"></i>
+                            </td>
+                        </tr>
+                        <tr ng-if="Meal.MealItems.length > 0">
+                            <td style="padding-left:20px;">
+                                <div ng-repeat="subitem in Meal.MealItems">
+                                    -  <i class="mSubItem">{{subitem.js_SubItem}}</i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+
+                                <i ng-hide="OpenCommentInput" class="fa fa-comment-o" ng-click="OpenCommentInput = true;"></i>
+                                <i>{{Meal.Comment}}</i>
+
+                                <div ng-show="OpenCommentInput" class="form-horizontal" style="margin-left:5px">
+                                    <div class="form-group input-group">
+                                        <input ng-model="iCommentModel" class="form-control" type="text" placeholder="your comment about this meal">
+                                        <span ng-click="OpenCommentInput = false; addComment(iCommentModel, $index);" class="input-group-addon"><i class="fa fa-check"></i></span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <br />
+                    </tbody>
+                </table>
+
+                <p>---------------------</p>
+
+                <div ng-show="preorder.Meals.length > 0">
+                    <center>
+                        <div class="price">Total <strong>€ {{preorder.Total.toFixed(2)}}</strong></div>
+
+                        <br />
+
+                        <a href="" ng-click="ValidatePreOrder()" class="ValidateBtnPopUP">Valider pré-commande</a>
+                        <br /><br />
+
+                    </center>
+
+                    <div class="clearfix tiny"><i>récupération de la commande dans <div class="strongOrange"><span id="toTimeSmall"></span></div> au magasin (<div class="strongBlue">paiement sur place</div>)</i></div>
+                </div>
+
+
+            }
+
+        </div>
+      </div>
+      <!-- @*// END Toggle Box for Small Screens*@ -->
+    </div>
+  </div>
+</section>

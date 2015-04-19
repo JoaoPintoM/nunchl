@@ -9,7 +9,12 @@ function($resource) {
 	}, {
 		update: {
 			method: 'PUT'
-		}
+		},
+    getmenu: {
+      method:'GET',
+      url: 'api/restaurants/:restaurantId/menu'
+      // isArray:true
+    }
 	});
 }])
 
@@ -24,6 +29,17 @@ function($resource) {
       }
     });
   }
+])
+
+.factory('Preorders', ['$resource',
+    function($resource) {
+      return $resource('api/preorders/:preorderId', { preorderId: '@_id'
+        }, {
+        update: {
+          method: 'PUT'
+        }
+      });
+    }
 ])
 
 

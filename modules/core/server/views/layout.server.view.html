@@ -37,6 +37,7 @@
 
 <body class="ng-cloak">
 
+  <!--
 	<header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
 	<section class="content">
 		<section class="container">
@@ -44,23 +45,23 @@
 		</section>
 	</section>
 
-	<!--Embedding The User Object-->
+
 	<script type="text/javascript">
 		var user = {{ user | json | safe }};
 	</script>
 
-	<!--Load The Socket.io File-->
+
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
-	<!--Application JavaScript Files-->
+
 	{% for jsFile in jsFiles %}<script type="text/javascript" src="{{jsFile}}"></script>{% endfor %}
 
 	{% if process.env.NODE_ENV === 'development' %}
-	<!--Livereload script rendered -->
+
 	<script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
 	{% endif %}
 
-	<!-- Google Analytics -->
+
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -70,9 +71,9 @@
 		ga('create', '{{googleAnalyticsTrackingID}}', 'auto');
 		ga('send', 'pageview');
 	</script>
+   -->
 
-<!--
-=======
+
   <header data-ng-include="'/modules/core/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
   <section class="content">
     <section class="container">
@@ -96,7 +97,7 @@
   <script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
   {% endif %}
 
->>>>>>> meanjsofficial -->
+
 </body>
 
 </html>

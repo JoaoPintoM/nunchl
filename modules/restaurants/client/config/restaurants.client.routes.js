@@ -1,7 +1,7 @@
 'use strict';
 
 //Setting up route
-angular.module('restaurants', ['mgcrea.ngStrap']).config(['$stateProvider',
+angular.module('restaurants').config(['$stateProvider',
 	function($stateProvider) {
 		// Restaurants state routing
 		$stateProvider.

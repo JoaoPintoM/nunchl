@@ -1,7 +1,7 @@
 'use strict';
 
 // Configuring the Restaurants module
-angular.module('restaurants').run(['Menus',
+angular.module('restaurants', ['mgcrea.ngStrap']).run(['Menus',
 	function(Menus) {
 		// Add the Restaurants dropdown item
 		Menus.addMenuItem('topbar', {

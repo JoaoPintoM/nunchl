@@ -6,7 +6,13 @@ nunchl project
 
 >  **Welcome to the nunchl project**
 
+
 > - we are still in development
+=======
+Dev Branch:
+[![Build Status](https://travis-ci.org/meanjs/mean.svg?branch=0.4.1)](https://travis-ci.org/meanjs/mean)
+[![Dependencies Status](https://david-dm.org/meanjs/mean/0.4.1.svg)](https://david-dm.org/meanjs/mean/0.4.1)
+
 
 
 ## Before You Begin
@@ -33,9 +39,7 @@ $ npm install -g bower
 $ npm install -g grunt-cli
 ```
 
-<<<<<<< HEAD
-## Running the Application
-=======
+
 ## Downloading MEAN.JS
 There are several ways you can get the MEAN.JS boilerplate:
 
@@ -84,12 +88,6 @@ After the install process is over, you'll be able to run your application using 
 $ grunt
 ```
 
-<<<<<<< HEAD
-Your application should run on the 3000 port so in your browser just go to [http://localhost:3000](http://localhost:3000)
-
-That's it! your application should be running by now, to proceed with your development check the other sections in this documentation.
-If you encounter any problem try the Troubleshooting section.
-=======
 Your application should run on port 3000 with the *development* environment configuration, so in your browser just go to [http://localhost:3000](http://localhost:3000)
 
 That's it! Your application should be running. To proceed with your development, check the other sections in this documentation.
@@ -141,18 +139,16 @@ And to run only the client tests, run the test:client task:
 ```bash
 $ grunt test:client
 ```
->>>>>>> meanjsofficial
+
 
 ## Development and deployment With Docker
 
 * Install [Docker](https://docs.docker.com/installation/#installation)
 * Install [Compose](https://docs.docker.com/compose/install/)
 
-<<<<<<< HEAD
-* Local development and testing with fig:
-=======
+
 * Local development and testing with compose:
->>>>>>> meanjsofficial
+
 ```bash
 $ docker-compose up
 ```
@@ -171,13 +167,10 @@ $ docker run -p 3000:3000 -p 35729:35729 -v /Users/mdl/workspace/mean-stack/mean
 ```
 
 ## Getting Started With MEAN.JS
-<<<<<<< HEAD
+
 You have your application running but there are a lot of stuff to understand, we recommend you'll go over the [Offical Documentation](http://meanjs.org/docs.html).
 In the docs we'll try to explain both general concepts of MEAN components and give you some guidelines to help you improve your development procees. We tried covering as many aspects as possible, and will keep update it by your request, you can also help us develop the documentation better by checking out the *gh-pages* branch of this repository.
-=======
-You have your application running, but there is a lot of stuff to understand. We recommend you go over the [Official Documentation](http://meanjs.org/docs.html).
-In the docs we'll try to explain both general concepts of MEAN components and give you some guidelines to help you improve your development process. We tried covering as many aspects as possible, and will keep it updated by your request. You can also help us develop and improve the documentation by checking out the *gh-pages* branch of this repository.
->>>>>>> meanjsofficial
+
 
 ## Community
 * Use the [Official Website](http://meanjs.org) to learn about changes and the roadmap.

@@ -30,6 +30,10 @@ exports.categoryByID = function(req, res, next, id) { Category.findById(id).exec
 
 //retrieve categories from a restaurant
 exports.list = function (req, res){
+  console.log( 'HIST LIST ');
+  console.log(req.param('restaurantId'));
+  console.log('menu');
+  console.log(req.param('menuId'));
 
   Restaurant.findOne({_id: req.param('restaurantId')})
     .where('menus._id').equals(req.param('menuId'))
@@ -49,8 +53,13 @@ exports.list = function (req, res){
         message: 'Not found'
       });
     }else{
+      console.log(restaurant.menus.length);
       var i = 0; //find the correct menu.
-      _(restaurant.menus).forEach(function(m) {
+
+      _.forEach(restaurant.menus, function(m) {
+        console.log(m);
+        console.log('serieux...,?');
+
           if(m._id.toString() === req.param('menuId')){
 
               // // return res.jsonp(restaurant.menus);
@@ -60,6 +69,13 @@ exports.list = function (req, res){
                 // model: Meal // <== We are populating phones so we need to use the correct model, not User
               }, function (err, o) {
 
+                if(err) {
+                  console.log('Error Menus : ', err);
+                  return res.status(500).send({
+                    message: 'something went wrong'
+                  });
+                }
+
                 return res.jsonp(o.categories);
               });
 
@@ -67,8 +83,6 @@ exports.list = function (req, res){
           }
           i++;
       });
-    // // its obliously the first one cause we only have a menu by ID
-    // return res.jsonp(restaurant.menus[0].categories);
     }
   });
 };

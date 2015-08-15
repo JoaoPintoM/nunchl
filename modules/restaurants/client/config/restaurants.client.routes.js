@@ -12,15 +12,15 @@ angular.module('restaurants').config(['$stateProvider',
 		}).
 		state('restaurants.list', {
 			url: '',
-			templateUrl: 'modules/restaurants/views/list-restaurants.client.view.html'
+			templateUrl: 'modules/restaurants/client/views/list-restaurants.client.view.html'
 		}).
 		state('restaurants.create', {
 			url: '/create',
-			templateUrl: 'modules/restaurants/views/create-restaurant.client.view.html'
+			templateUrl: 'modules/restaurants/client/views/create-restaurant.client.view.html'
 		})
 		.state('restaurants.paginated', {
 	    url: '/page-:pageNum',
-	    templateUrl: 'modules/restaurants/views/list-restaurants.client.view.html'
+	    templateUrl: 'modules/restaurants/client/views/list-restaurants.client.view.html'
 	    // controller: function ($stateParams) {
 	    //     // If we got here from a url of /contacts/page-2
 	    //     expect($stateParams).toBe({pageNum: 2});
@@ -28,19 +28,19 @@ angular.module('restaurants').config(['$stateProvider',
 		}).
     state('restaurants.viewNchl', {
       url: '/nchl/:restaurantId',
-      templateUrl: 'modules/restaurants/views/nchl-view-restaurant.client.view.html'
+      templateUrl: 'modules/restaurants/client/views/nchl-view-restaurant.client.view.html'
     }).
 		state('restaurants.view', {
 			url: '/:restaurantId',
-			templateUrl: 'modules/restaurants/views/view-restaurant.client.view.html'
+			templateUrl: 'modules/restaurants/client/views/view-restaurant.client.view.html'
 		}).
 		state('restaurants.edit', {
 			url: '/:restaurantId/edit',
-			templateUrl: 'modules/restaurants/views/edit-restaurant.client.view.html'
+			templateUrl: 'modules/restaurants/client/views/edit-restaurant.client.view.html'
 		}).
 		state('restaurants.adminMenu', {
 			url: '/:restaurantId/menu/:menuId/adminMenu',
-			templateUrl: 'modules/restaurants/views/menu-admin.client.view.html'
+			templateUrl: 'modules/restaurants/client/views/menu-admin.client.view.html'
 		});
 	}
 ]);

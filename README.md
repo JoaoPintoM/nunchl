@@ -14,7 +14,7 @@ nunchl project
 [![Dependencies Status](https://david-dm.org/meanjs/mean.svg)](https://david-dm.org/meanjs/mean)
 
 MEAN.JS is a full-stack JavaScript open-source solution, which provides a solid starting point for [MongoDB](http://www.mongodb.org/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/) based applications. The idea is to solve the common issues with connecting those frameworks, build a robust framework to support daily development needs, and help developers use better practices while working with popular JavaScript components.
->>>>>>> meanjs04backup
+
 
 ## Before You Begin
 Before you begin we recommend you read about the basic building blocks that assemble a MEAN.JS application:
@@ -82,7 +82,7 @@ This command does a few things:
 * Finally, when the install process is over, npm will initiate a bower install command to install all the front-end modules needed for the application
 
 ## Running Your Application
->>>>>>> meanjsofficial
+
 After the install process is over, you'll be able to run your application using Grunt, just run grunt default task:
 
 ```

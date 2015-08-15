@@ -226,7 +226,7 @@ exports.deleteMenu = function(req, res){
 	    	var categoriesToDelete = [];
 
 	    	//that small code remove the menu reference in menus and menu (if active)
-	    	_(restaurant.menus).forEach(function(m) {
+	    	_.forEach(restaurant.menus, function(m) {
 	    		if(m._id.toString() === menuId){
 	    			toRemove = i;
 	    			categoriesToDelete = m.categories;
@@ -306,7 +306,7 @@ exports.setMainMenu = function(restoId, menuId, callback){
 
 		//first each to put everything as not active.
 		var i = 0;
-		_(restaurant.menus).forEach(function(m) {
+    _.forEach(restaurant.menus, function(m) {
 			restaurant.menus[i].active = false;
 			i++;
 		});
@@ -319,7 +319,7 @@ exports.setMainMenu = function(restoId, menuId, callback){
 
 			i = 0;
 			//for each to find the correct menu (workaround..)
-			_(restaurant.menus).forEach(function(m) {
+      _.forEach(restaurant.menus, function(m) {
 				if(m._id.toString() === menuId){
 
 					//doing our stuff :)

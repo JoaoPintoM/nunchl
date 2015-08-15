@@ -158,7 +158,8 @@ exports.create = function(req, res) {
         //update the correct menu
         // callback hell
         var i = 0;
-        _(restaurant.menus).forEach(function(m) {
+        // _(restaurant.menus).forEach(function(m) {
+        _.forEach(restaurant.menus, function(m) {
 
             if(m._id.toString() === req.param('menuId')){
 

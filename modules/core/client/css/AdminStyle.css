@@ -1,0 +1,106 @@
+
+/*table {
+    border-collapse: collapse;
+}*/
+
+.table > tbody > tr > td {
+    padding: 0;
+}
+
+
+.admRow {
+    height: 150px;
+    margin-bottom:50px;
+}
+
+
+
+.admRow-menu {
+    height: 100px;
+    margin-bottom:50px;
+}
+
+/*.admRow td {
+        padding: 0;
+    }*/
+
+
+.admStatus-open {
+    width: 15px;
+    background-color: #487835;
+}
+
+.admStatus-close {
+    width: 15px;
+    background-color: #ad0505;
+}
+
+.admPic {
+    width: 200px;
+}
+
+.admMain {
+    width: 400px;
+    min-width: 400px;
+    background-color: #ffffff;
+    padding-left: 10px;
+}
+
+.admLivePanel {
+    width: 100px;
+    min-width: 90px;
+    background-color: #ad0505;
+    color: white;
+    text-align: center;
+}
+
+
+.admMenu {
+    width: 100px;
+    min-width: 90px;
+    background-color: #0578ae;
+    color: white;
+    text-align: center;
+}
+
+
+.admSetting {
+    width: 100px;
+    min-width: 90px;
+    background-color: #05ac74;
+    color: white;
+    text-align: center;
+}
+
+.admOpenSettings {
+    width: 100px;
+    min-width: 90px;
+    background-color: #ff6a00;
+    color: white;
+    text-align: center;
+}
+
+.clearRow {
+    height:20px;
+}
+
+
+.admRestoNameLink {
+    color: black;
+    text-decoration: none;
+}
+
+    .admRestoNameLink:hover {
+        color: #24b0ae;
+        font-weight: bold;
+        text-decoration: none;
+    }
+
+.admLinkRow {
+    color: white;
+}
+
+    .admLinkRow:hover {
+        text-decoration: none;
+        color: black;
+    }

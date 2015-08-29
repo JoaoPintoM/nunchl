@@ -1,4 +1,4 @@
-<section data-ng-controller="RestaurantsController">
+<!-- <section data-ng-controller="RestaurantsController">
     <div class="page-header">
         <h1>New Restaurant</h1>
     </div>
@@ -20,4 +20,248 @@
             </fieldset>
         </form>
     </div>
+</section> -->
+
+
+
+
+
+<!-- <section data-ng-controller="RestaurantsController">
+  <div class="page-header">
+    <h1>New Restaurant</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="restaurantForm" class="form-horizontal" data-ng-submit="create()" novalidate>
+      <fieldset>
+        <div class="form-group" ng-class="{ 'has-error': restaurantForm.name.$dirty && restaurantForm.name.$invalid }">
+          <label class="control-label" for="name">Name</label>
+          <div class="controls">
+            <input name="name" type="text" data-ng-model="name" id="name" class="form-control" placeholder="Name" required>
+          </div>
+        </div>
+
+        <div class="form-group" >
+          <label class="control-label" for="description">Restaurant description</label>
+          <div class="controls">
+            <textarea name="description" data-ng-model="description" class="form-control" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input type="submit" class="btn btn-default">
+        </div>
+        <div data-ng-show="error" class="text-danger">
+          <strong data-ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section> -->
+
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9RPTikkm6Lbg_XiOBoOGsskr4KC9wU-c&sensor=false"></script> -->
+
+<section data-ng-controller="RestaurantsController">
+
+<!-- <link href="~/Content/Restaurant_Creation.css" rel="stylesheet" />
+<link href="~/Content/jcrop/jquery.Jcrop.css" rel="stylesheet" /> -->
+
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9RPTikkm6Lbg_XiOBoOGsskr4KC9wU-c&sensor=false"></script> -->
+<link href="lib/jcrop/css/jquery.Jcrop.min.css" rel="stylesheet" />
+
+<div class="inner-content">
+  <div class="nunchl-page">
+
+    <div class="nunchl-box" id="menuCreationId">
+
+      <div class="nunchl-center">
+        <h2>CreateNewRestaurant</h2>
+      </div>
+      <button class="btn btn-default" ng-click="create()">lol</button>
+        <form id="myform" method="POST" data-ng-submit="create()">
+        <div class="nunchl-right">
+
+          <div ng-if='logo'>
+            <img ng-src="{{logo}}" alt="Restaurant Image">
+          </div>
+
+          <div ng-hide="CheckMainInfo()">
+            <h3>Image/Logo for your Restaurant</h3>
+            <i>min size : 260x150</i>
+
+            <input name="file" type="file" />
+            <input type="hidden" id="filename" name="fileName" />
+            <div id="uploadPreview"></div>
+            <br />
+
+            <a ng-show="showUploadButton()" id="buttonUpload" class="btn btn-lg btn-info" href="">
+              <i class="fa fa-cloud-upload fa-lg pull-left"></i> Upload Image
+            </a>
+
+
+            <div ng-if="isImageUploaded()">
+              <div class="image-cropper">
+                <img id="photoCrop" ng-src="upimg/{{fileName}}" style="width:400px;" style="min-height:150px" class="image" />
+                <!-- <img id="photoCrop" ng-src="~/Content/upload/Temp/{{_selectedCountry}}/{{_now}}_{{_restoNameTrimmed}}{{_extension}}?maxwidth=400" style="min-height:150px" class="image" /> -->
+              </div>
+
+              <div style="width: 260px; height: 150px; overflow: hidden">
+                <img id="preview" ng-src="upimg/{{fileName}}">
+              </div>
+              <button id="validateCrop">Create!</button>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div class="nunchl-left">
+          <div class="nunchl-section">
+
+            <a ng-hide="!CheckMainInfo()" ng-click="editMainInfo()">edit..</a>
+
+
+            <fieldset id="fieldset">
+
+
+              <label for="Name">RestaurantName</label><span class="badge pull-right" id="countRestaurantName" >100</span>
+              <div class="form-group" ng-class="{ 'has-error': restaurantForm.name.$dirty && restaurantForm.name.$invalid }">
+                <input type="text" name="name" class="form-control" id="restaurantName"
+                data-ng-model="name" ng-change="UpdateTrim()"
+                placeholder="eg. Super pizza restaurant">
+              </div>
+
+              <label for="Countries">RestaurantCountry</label>
+              <div class="form-group">
+
+
+              </div>
+
+              <!-- <label for="ZipCode">ZipCode</label> -->
+              <div class="form-group" id="group-zipcode">
+                <input type="hidden" name="zipcode" class="form-control" id="ZipCode" placeholder="1040">
+                <input type="hidden" data-ng-model="logo" name="logo" class="form-control" id="Logo">
+              </div>
+
+              <label for="AddressName">RestaurantAdress</label>
+              <div class="form-group input-group" id="group-address">
+                <input class="form-control" id="AddressName" name="AddressName" type="text" placeholder="Restaurant address">
+                <span ng-click="validateAddress()" class="input-group-addon"><i id="target" class="fa fa-hand-o-right"></i></span>
+              </div>
+
+              <div class="form-group">
+                <!-- <input type="submit" class="btn btn-default"> -->
+                <button class="btn btn-default" ng-click="create()">lol</button>
+              </div>
+
+              <div id="fuu">
+              </div>
+
+              <div id="geoResultsSection">
+                <div ng-show="geoCodeResult.length > 0"><h4>Select your address</h4></div>
+                <div ng-repeat="address in geoCodeResult">
+                  <span class="geocodeResult" ng-click="selectResult($index)"><i class="fa fa-caret-square-o-right"></i> {{address.formatted_address}}</span>
+                </div>
+                <br /><br />
+              </div>
+
+
+
+              <label for="Description">RestaurantDescription</label><span class="badge pull-right" id="countRestaurantDescription">100</span>
+              <div class="form-group">
+                <input type="text" name="Description" data-ng-model="description" class="form-control" id="restaurantDescription"
+                placeholder="Un restaurant fort sympathique qui plaira aux petits comme aux grands!">
+              </div>
+
+              <label for="Ouverture">RestaurantOpeningHours</label>
+              <div class="form-group">
+                <input type="text" name="Ouverture" class="form-control"
+                placeholder="Ouvert du Lundi au Samedi De 10h à 22h">
+              </div>
+
+              <label for="PhoneNumber">RestaurantPhoneNumber</label>
+              <div class="form-group">
+                <input type="text" name="PhoneNumber" class="form-control"
+                placeholder="eg. 02 7XX XX 38">
+              </div>
+
+
+              <div class="form-group">
+                <input type="hidden" value="0" name="DefaultMenu" />
+                <input type="hidden" value="0" id="Logo" name="Logo" />
+                <input type="hidden" value="0" id="ZipCode" name="ZipCode" />
+                <input type="hidden" value="" id="route" name="route" />
+                <input type="hidden" value="" id="street_number" name="street_number" />
+                <input type="hidden" value="" id="locality" name="locality" />
+                <input type="hidden" value="" id="administrative_area_level_1" name="administrative_area_level_1" />
+                <input type="hidden" value="" id="administrative_area_level_2" name="administrative_area_level_2" />
+                <input type="hidden" name="location" id="location">
+
+                <br />
+              </div>
+
+
+              <div class="form-group">
+
+                <label for="selectedTypes">RestaurantType ( max 3 )</label>
+                <br />
+
+                @{ int index = 1;
+                  foreach (var type in ViewBag.Types)
+                  {
+                    <label class="checkbox-inline">
+                      <input type="checkbox" id="selectedTypes" class="checkClass" name="selectedTypes" value="@type.Id"> @type.Name
+                    </label>
+
+                    if (index % 6 == 0)
+                    {
+                      <br />
+                    }
+
+                    index++;
+                  }
+                }
+              </div>
+
+              <br />
+              <div class="row">
+                <div class="col-md-12">
+                  <center>
+                    <a ng-click="toggleInfoFilled()" id="toggleButton" class="btn btn-lg btn-success" href="">
+                      <i class="fa fa-check fa-lg pull-left"></i> Validation
+                    </a>
+                  </center>
+                </div>
+              </div>
+
+              <br />
+
+            </fieldset>
+
+            <div ng-if="picValidated" class="form-group">
+              <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="btnSubmitForm" value="Create" class="btn btn-default" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 </section>
+
+<script src="lib/jcrop/js/jquery.Jcrop.min.js"></script>
+
+<!-- @section Scripts {
+  <script src="~/Scripts/js/jcrop/jquery.min.js"></script>
+  <script src="~/Scripts/angular.min.js"></script>
+  <script src="~/Scripts/js/jcrop/jquery.Jcrop.min.js"></script>
+  <script src="~/Scripts/toastr.min.js"></script>
+  @*<script src="~/Scripts/js/jquery.uploadfile.min.js"></script>*@
+  <script src="~/App/Creation-Edit-Restaurant.js"></script>
+  <script src="~/App/RestaurantCreation.js"></script>
+
+  @*<script src="~/Scripts/jquery.validate.min.js"></script>
+  <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+} -->

@@ -1,0 +1,30 @@
+/*@font-face {
+	font-family: Sansation-Regular;
+	src: url('fonts/sansation/Sansation-Regular.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: Sansation-Bold;
+	src: url('fonts/sansation/Sansation-Bold.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: CarroisGothic-Regular;
+	src: url('../fonts/CarroisGothic-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: CarroisGothicSC-Regular;
+	src: url('../fonts/CarroisGothicSC-Regular.ttf') format('truetype');
+}*/
+
+@font-face {
+	font-family: Roboto;
+
+	src: url('roboto/Roboto-Light.ttf') format('truetype');
+}
+
+
+@font-face {
+	font-family: Nexa Light;
+	src: url('Nexa Light.otf') format('opentype');
+}

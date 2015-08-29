@@ -2,19 +2,19 @@
     <div class="nunchLogo-box">
         <!-- @*<a href="~/Home"><img src="~/Content/site_base/logoNunchl.png" /></a>*@ -->
         <a href="/#!/" ui-route="/home">
-            <img src="/modules/core/img/nchl/site_base/test.png" width="140" />
+            <img src="/modules/core/client/img/nchl/site_base/test.png" width="140" />
         </a>
 
     </div>
     <div class="nunchlLoginForm">
         <div class="separator">
-            <img src="/modules/core/img/nchl/site_base/separator.png" />
+            <img src="/modules/core/client/img/nchl/site_base/separator.png" />
         </div>
             <div data-ng-if="authentication.user">
                 <span>{{authentication.user.username}}</span>
 
                 <!-- <br /> -->
-                <a class="logOutLink" href="/auth/signout">
+                <a class="logOutLink" target="_self" href="/api/auth/signout">
                     <div>Disconnect</div>
                 </a>
             </div>
@@ -24,12 +24,12 @@
                     <!-- <br /> -->
 
                     <!-- @Html.ActionLink(Nunchl.Resources.Resource.Connect, "Login", "Account", routeValues: new { returnUrl = "/" }, htmlAttributes: new { @class = "buttonsRightMenu" }) -->
-                    <a class="buttonsRightMenu" href="/#!/signin">Sign In</a>
+                    <a class="buttonsRightMenu" href="/authentication/signin">Sign In</a>
                     <br />
                     <br />
                     Vous n'avez pas de compte ?
                     <!-- @Html.ActionLink(Nunchl.Resources.Resource.Registration, "Register", "Account", routeValues: new { returnUrl = "/" }, htmlAttributes: new { }) -->
-                    <a href="/#!/signup">Register now</a>
+                    <a href="/authentication/signup">Register now</a>
                 </div>
             </center>
 
@@ -38,7 +38,7 @@
         <div class="beforeSeparator"></div>
 
         <div class="separator">
-            <img src="/modules/core/img/nchl/site_base/separator.png" />
+            <img src="/modules/core/client/img/nchl/site_base/separator.png" />
         </div>
 
     </div>
@@ -46,13 +46,13 @@
     <div class="menu-box">
         <ul class="menu listMenu">
 
-          <li data-ui-sref-active="active">
+      <!-- <li data-ui-sref-active="active">
         <a data-ui-sref="authentication.signup">Sign Up</a>
       </li>
       <li class="divider-vertical"></li>
       <li data-ui-sref-active="active">
         <a data-ui-sref="authentication.signin">Sign In</a>
-      </li>
+      </li> -->
 
 
       <li data-ng-repeat="item in menu.items | orderBy: 'position'" data-ng-if="item.shouldRender(authentication.user);" ng-switch="item.type" data-ng-class="{ active: $state.includes(item.state), dropdown: item.type === 'dropdown' }" class="{{item.class}}" dropdown="item.type === 'dropdown'">

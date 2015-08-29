@@ -9,7 +9,8 @@ module.exports = {
         'public/lib/angular-motion/dist/angular-motion.min.css'
       ],
       js: [
-      // 'public/lib/jquery/dist/jquery.min.js',
+        'https://maps.googleapis.com/maps/api/js?key=AIzaSyC9RPTikkm6Lbg_XiOBoOGsskr4KC9wU-c&sensor=false',
+        'public/lib/jquery/dist/jquery.min.js',
         'public/lib/angular/angular.js',
         'public/lib/angular-resource/angular-resource.js',
         'public/lib/angular-animate/angular-animate.js',

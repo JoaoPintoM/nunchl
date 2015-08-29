@@ -3,6 +3,16 @@
 module.exports = function (app) {
   // Root routing
   var core = require('../controllers/core.server.controller');
+  // var uploads = require('../../../uploads/server/controllers/uploads.server.controller');
+  //
+  //
+  // //uploads..
+  //
+  // app.route('/file-upload/resize/restaurants').post(uploads.restaurants);
+  // app.route('/file-upload/resize/meals').post(uploads.meals);
+  // app.route('/file-upload/resize/categories').post(uploads.categories);
+  // app.route('/file-upload').post(uploads.root);
+
 
   // Define error pages
   app.route('/server-error').get(core.renderServerError);

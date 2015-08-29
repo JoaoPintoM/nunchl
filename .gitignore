@@ -1,3 +1,6 @@
+modules/upload/
+public/upimg/
+
 # OS
 # ===========
 .DS_Store
